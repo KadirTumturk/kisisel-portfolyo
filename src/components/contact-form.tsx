@@ -42,7 +42,7 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="space-y-4 border border-border bg-card/60 p-6">
+      <div className="space-y-4 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(29,79,255,0.35)] sm:p-8">
         <h2 className="font-heading text-2xl text-ink">Teşekkürler</h2>
         <p className="text-muted-foreground">
           Mesajın veri tabanına kaydedildi. En kısa sürede dönüş yapacağım.
@@ -55,7 +55,10 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5 border border-border bg-card/50 p-6">
+    <form
+      onSubmit={onSubmit}
+      className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
+    >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">Ad Soyad</Label>

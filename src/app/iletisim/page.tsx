@@ -11,19 +11,21 @@ export default async function ContactPage() {
   const profile = await requireProfile();
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+    <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
       <div>
-        <p className="text-sm uppercase tracking-[0.18em] text-clay">İletişim</p>
-        <h1 className="font-heading mt-2 text-4xl text-ink sm:text-5xl">Birlikte çalışalım</h1>
-        <p className="mt-4 text-muted-foreground">
+        <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">İletişim</p>
+        <h1 className="font-heading mt-2 text-4xl tracking-tight text-ink sm:text-5xl">
+          Birlikte çalışalım
+        </h1>
+        <p className="mt-4 max-w-md text-muted-foreground">
           Proje, staj veya iş birliği için formu doldurman yeterli. Mesajın doğrudan veri
           tabanıma düşer.
         </p>
-        <dl className="mt-8 space-y-4 text-sm">
+        <dl className="mt-10 space-y-5 text-sm">
           <div>
             <dt className="text-muted-foreground">E-posta</dt>
-            <dd>
-              <a href={`mailto:${profile.email}`} className="text-ink hover:text-clay">
+            <dd className="mt-1">
+              <a href={`mailto:${profile.email}`} className="font-medium text-ink hover:text-clay">
                 {profile.email}
               </a>
             </dd>
@@ -31,12 +33,12 @@ export default async function ContactPage() {
           {profile.phone ? (
             <div>
               <dt className="text-muted-foreground">Telefon</dt>
-              <dd className="text-ink">{profile.phone}</dd>
+              <dd className="mt-1 font-medium text-ink">{profile.phone}</dd>
             </div>
           ) : null}
           <div>
             <dt className="text-muted-foreground">Konum</dt>
-            <dd className="text-ink">{profile.location}</dd>
+            <dd className="mt-1 font-medium text-ink">{profile.location}</dd>
           </div>
         </dl>
       </div>

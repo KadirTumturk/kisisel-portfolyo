@@ -2,16 +2,36 @@
 
 import { useState } from "react";
 
+function onlyPhoneChars(value: string) {
+  return value.replace(/[^\d+\s()-]/g, "");
+}
+
+function normalizePhone(value: string) {
+  return value.replace(/[^\d+]/g, "");
+}
+
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [phone, setPhone] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
     setError(null);
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const raw = Object.fromEntries(new FormData(form).entries());
+    const data = {
+      ...raw,
+      phone: normalizePhone(String(raw.phone ?? "")),
+    };
+
+    const digits = String(data.phone).replace(/\D/g, "");
+    if (digits.length > 0 && (digits.length < 10 || digits.length > 13)) {
+      setStatus("error");
+      setError("Telefon 10–13 rakam olmalı (örn. 05421234567).");
+      return;
+    }
 
     try {
       const res = await fetch("/api/messages", {
@@ -26,6 +46,7 @@ export function ContactForm() {
         return;
       }
       setStatus("success");
+      setPhone("");
       form.reset();
     } catch {
       setStatus("error");
@@ -60,13 +81,22 @@ export function ContactForm() {
       method="post"
       action="#"
       className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
+      noValidate
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">
             Ad Soyad
           </label>
-          <input id="name" name="name" required maxLength={80} placeholder="Adın" className={fieldClass} />
+          <input
+            id="name"
+            name="name"
+            required
+            minLength={2}
+            maxLength={80}
+            placeholder="Adın"
+            className={fieldClass}
+          />
         </div>
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium">
@@ -88,7 +118,21 @@ export function ContactForm() {
           <label htmlFor="phone" className="text-sm font-medium">
             Telefon
           </label>
-          <input id="phone" name="phone" maxLength={30} placeholder="05xx xxx xx xx" className={fieldClass} />
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            maxLength={20}
+            placeholder="05xx xxx xx xx"
+            value={phone}
+            onChange={(e) => setPhone(onlyPhoneChars(e.target.value))}
+            pattern="[\d\s+\()-]*"
+            title="Sadece rakam ve telefon işaretleri"
+            className={fieldClass}
+          />
+          <p className="text-xs text-muted-foreground">Sadece numara (harf yok). Örn. 05421234567</p>
         </div>
         <div className="space-y-2">
           <label htmlFor="subject" className="text-sm font-medium">
@@ -98,6 +142,7 @@ export function ContactForm() {
             id="subject"
             name="subject"
             required
+            minLength={2}
             maxLength={120}
             placeholder="Proje / iş teklifi"
             className={fieldClass}

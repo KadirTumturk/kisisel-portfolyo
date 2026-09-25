@@ -62,8 +62,7 @@ export function AdminDashboard({
   const unread = messages.filter((m) => !m.read).length;
 
   async function logout() {
-    await fetch("/api/admin/login", { method: "DELETE" });
-    window.location.assign("/admin/giris");
+    window.location.href = "/admin/cikis";
   }
 
   async function toggleRead(id: string, read: boolean) {

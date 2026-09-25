@@ -1,3 +1,5 @@
+import { logoutAdminAction } from "../actions";
+import { isAdminAuthenticated } from "@/lib/auth";
 import { loginAdminAction } from "./actions";
 
 export default async function AdminLoginPage({
@@ -7,13 +9,43 @@ export default async function AdminLoginPage({
 }) {
   const params = await searchParams;
   const hasError = params.hata === "1";
+  const loggedIn = await isAdminAuthenticated();
+
+  if (loggedIn) {
+    return (
+      <div className="relative flex min-h-[78vh] items-center justify-center px-4 py-16">
+        <div className="w-full max-w-md rounded-3xl border border-border bg-white/90 p-8 text-center shadow-[0_24px_60px_-32px_rgba(29,79,255,0.35)]">
+          <p className="text-xs font-medium uppercase tracking-[0.28em] text-clay">Yönetim</p>
+          <h1 className="font-heading mt-3 text-3xl tracking-tight text-ink">
+            Zaten giriş yaptın
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Panele dönebilir veya çıkış yapıp giriş ekranını tekrar görebilirsin.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <a
+              href="/admin"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-clay px-5 text-sm font-medium text-white hover:bg-clay/90"
+            >
+              Panele git
+            </a>
+            <form action={logoutAdminAction}>
+              <button
+                type="submit"
+                className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-ink hover:bg-mist sm:w-auto"
+              >
+                Çıkış yap
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex min-h-[78vh] items-center justify-center px-4 py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-      >
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -left-24 top-10 size-72 rounded-full bg-clay/10 blur-3xl" />
         <div className="absolute -right-16 bottom-0 size-80 rounded-full bg-ink/5 blur-3xl" />
       </div>

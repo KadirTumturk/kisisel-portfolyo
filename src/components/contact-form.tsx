@@ -1,14 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 export function ContactForm() {
-  const router = useRouter();
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -33,12 +27,14 @@ export function ContactForm() {
       }
       setStatus("success");
       form.reset();
-      router.refresh();
     } catch {
       setStatus("error");
       setError("Bağlantı hatası. Lütfen tekrar deneyin.");
     }
   }
+
+  const fieldClass =
+    "h-10 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30";
 
   if (status === "success") {
     return (
@@ -47,9 +43,13 @@ export function ContactForm() {
         <p className="text-muted-foreground">
           Mesajın veri tabanına kaydedildi. En kısa sürede dönüş yapacağım.
         </p>
-        <Button type="button" variant="outline" onClick={() => setStatus("idle")}>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm hover:bg-mist"
+        >
           Yeni mesaj
-        </Button>
+        </button>
       </div>
     );
   }
@@ -57,38 +57,58 @@ export function ContactForm() {
   return (
     <form
       onSubmit={onSubmit}
+      method="post"
+      action="#"
       className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Ad Soyad</Label>
-          <Input id="name" name="name" required maxLength={80} placeholder="Adın" />
+          <label htmlFor="name" className="text-sm font-medium">
+            Ad Soyad
+          </label>
+          <input id="name" name="name" required maxLength={80} placeholder="Adın" className={fieldClass} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">E-posta</Label>
-          <Input
+          <label htmlFor="email" className="text-sm font-medium">
+            E-posta
+          </label>
+          <input
             id="email"
             name="email"
             type="email"
             required
             maxLength={120}
             placeholder="ornek@mail.com"
+            className={fieldClass}
           />
         </div>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Telefon</Label>
-          <Input id="phone" name="phone" maxLength={30} placeholder="05xx xxx xx xx" />
+          <label htmlFor="phone" className="text-sm font-medium">
+            Telefon
+          </label>
+          <input id="phone" name="phone" maxLength={30} placeholder="05xx xxx xx xx" className={fieldClass} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="subject">Konu</Label>
-          <Input id="subject" name="subject" required maxLength={120} placeholder="Proje / iş teklifi" />
+          <label htmlFor="subject" className="text-sm font-medium">
+            Konu
+          </label>
+          <input
+            id="subject"
+            name="subject"
+            required
+            maxLength={120}
+            placeholder="Proje / iş teklifi"
+            className={fieldClass}
+          />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="body">Mesaj</Label>
-        <Textarea
+        <label htmlFor="body" className="text-sm font-medium">
+          Mesaj
+        </label>
+        <textarea
           id="body"
           name="body"
           required
@@ -96,12 +116,17 @@ export function ContactForm() {
           maxLength={2000}
           rows={6}
           placeholder="Kısaca yaz..."
+          className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30"
         />
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      <Button type="submit" disabled={status === "loading"} className="bg-clay text-primary-foreground hover:bg-clay/90">
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90 disabled:opacity-50"
+      >
         {status === "loading" ? "Gönderiliyor..." : "Mesajı gönder"}
-      </Button>
+      </button>
     </form>
   );
 }

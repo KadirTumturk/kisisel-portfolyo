@@ -1,13 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -16,19 +11,25 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    setLoading(false);
-    if (!res.ok) {
-      const json = await res.json();
-      setError(json.error ?? "Giriş başarısız");
-      return;
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(json.error ?? "Şifre hatalı");
+        setLoading(false);
+        return;
+      }
+      // Cookie oturumu için soft navigate yerine tam sayfa geçişi
+      window.location.assign("/admin");
+    } catch {
+      setError("Bağlantı hatası. Tekrar dene.");
+      setLoading(false);
     }
-    router.push("/admin");
-    router.refresh();
   }
 
   return (
@@ -37,21 +38,34 @@ export default function AdminLoginPage() {
       <p className="mt-2 text-sm text-muted-foreground">
         Mesajları ve içerikleri yönetmek için şifreni gir.
       </p>
-      <form onSubmit={onSubmit} className="mt-8 space-y-4 border border-border bg-card/50 p-6">
+      <form
+        onSubmit={onSubmit}
+        method="post"
+        className="mt-8 space-y-4 rounded-2xl border border-border bg-white p-6 shadow-sm"
+      >
         <div className="space-y-2">
-          <Label htmlFor="password">Şifre</Label>
-          <Input
+          <label htmlFor="password" className="text-sm font-medium text-ink">
+            Şifre
+          </label>
+          <input
             id="password"
+            name="password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="h-10 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30"
           />
         </div>
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
-        <Button type="submit" disabled={loading} className="bg-clay hover:bg-clay/90">
-          {loading ? "..." : "Giriş yap"}
-        </Button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90 disabled:opacity-50"
+        >
+          {loading ? "Giriş yapılıyor..." : "Giriş yap"}
+        </button>
       </form>
     </div>
   );

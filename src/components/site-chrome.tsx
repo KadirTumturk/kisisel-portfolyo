@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { cn } from "@/lib/utils";
 import type { Dictionary, Locale } from "@/lib/i18n";
 
@@ -28,10 +29,13 @@ export function SiteHeader({
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link
           href="/"
-          className="font-heading text-lg font-semibold tracking-tight text-ink sm:text-xl"
+          className="flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight text-ink sm:text-xl"
         >
-          {name}
-          <span className="ml-1 text-clay">.</span>
+          <BrandLogo size={32} title={name} />
+          <span>
+            {name}
+            <span className="ml-0.5 text-clay">.</span>
+          </span>
         </Link>
         <nav className="flex flex-wrap items-center gap-0.5 text-sm sm:gap-1">
           {links.map((link) => (

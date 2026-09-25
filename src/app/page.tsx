@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ProjectCard } from "@/components/project-card";
 import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/data";
@@ -16,13 +17,6 @@ export default async function HomePage() {
   const profile = await requireProfile();
   const featured = profile.projects.filter((p) => p.featured);
   const projects = featured.length ? featured : profile.projects.slice(0, 2);
-  const initials = profile.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0])
-    .join("")
-    .toUpperCase();
 
   const title = locale === "en" ? contentEn.title : profile.title;
   const bio = locale === "en" ? contentEn.bio : profile.bio;
@@ -79,33 +73,18 @@ export default async function HomePage() {
           </div>
 
           <div className="animate-rise delay-2 relative mx-auto w-full max-w-md lg:max-w-none">
-            <div className="animate-float hero-panel relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] sm:aspect-[5/6]">
-              <div
-                className="absolute inset-0 opacity-30"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px)",
-                  backgroundSize: "28px 28px",
-                }}
+            <div className="animate-float mx-auto w-full max-w-[22rem] lg:max-w-none">
+              <Image
+                src="/brand/logo.png"
+                alt="KT"
+                width={512}
+                height={512}
+                className="aspect-square w-full rounded-[1.75rem] object-cover shadow-[0_30px_80px_-28px_rgba(29,79,255,0.55)]"
+                priority
               />
-              <div className="absolute inset-0 flex flex-col justify-between p-7 text-white sm:p-9">
-                <div className="flex items-start justify-between gap-3">
-                  <span className="text-xs uppercase tracking-[0.22em] text-white/70">
-                    {dict.fullStack}
-                  </span>
-                  <span className="rounded-full border border-white/25 px-3 py-1 text-xs text-white/80">
-                    2025–2027
-                  </span>
-                </div>
-                <div>
-                  <p className="font-heading text-7xl leading-none tracking-tight sm:text-8xl">
-                    {initials}
-                  </p>
-                  <p className="mt-4 max-w-[14rem] text-sm leading-relaxed text-white/75">
-                    {dict.heroPanelText}
-                  </p>
-                </div>
-              </div>
+              <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                {dict.heroPanelText}
+              </p>
             </div>
           </div>
         </div>

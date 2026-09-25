@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="KT">
+  <rect width="128" height="128" rx="28" fill="#0B0D10"/>
+  <!-- Abstract interlocking KT mark -->
+  <!-- K stem -->
+  <rect x="30" y="28" width="20" height="72" rx="3" fill="#F5F7FB"/>
+  <!-- K upper arm -->
+  <path d="M54 42V56L86 28H72L54 42Z" fill="#F5F7FB"/>
+  <rect x="72" y="28" width="16" height="16" rx="2.5" fill="#F5F7FB"/>
+  <!-- Shared crossbar: white into blue signature -->
+  <rect x="50" y="50" width="28" height="16" rx="2.5" fill="#F5F7FB"/>
+  <rect x="76" y="50" width="28" height="16" rx="2.5" fill="#1D4FFF"/>
+  <!-- T stem -->
+  <rect x="76" y="62" width="16" height="38" rx="3" fill="#F5F7FB"/>
+  <!-- K lower arm -->
+  <path d="M54 72L54 84L82 100H68L54 88V72Z" fill="#F5F7FB"/>
+</svg>

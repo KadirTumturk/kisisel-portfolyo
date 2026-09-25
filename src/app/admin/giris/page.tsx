@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { logoutAdminAction } from "../actions";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { loginAdminAction } from "./actions";
@@ -15,7 +16,14 @@ export default async function AdminLoginPage({
     return (
       <div className="relative flex min-h-[78vh] items-center justify-center px-4 py-16">
         <div className="w-full max-w-md rounded-3xl border border-border bg-white/90 p-8 text-center shadow-[0_24px_60px_-32px_rgba(29,79,255,0.35)]">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-clay">Yönetim</p>
+          <Image
+            src="/brand/logo.png"
+            alt="KT"
+            width={64}
+            height={64}
+            className="mx-auto rounded-2xl"
+          />
+          <p className="mt-5 text-xs font-medium uppercase tracking-[0.28em] text-clay">Yönetim</p>
           <h1 className="font-heading mt-3 text-3xl tracking-tight text-ink">
             Zaten giriş yaptın
           </h1>
@@ -52,7 +60,15 @@ export default async function AdminLoginPage({
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-clay">Yönetim</p>
+          <Image
+            src="/brand/logo.png"
+            alt="KT"
+            width={72}
+            height={72}
+            className="mx-auto rounded-2xl shadow-sm"
+            priority
+          />
+          <p className="mt-5 text-xs font-medium uppercase tracking-[0.28em] text-clay">Yönetim</p>
           <h1 className="font-heading mt-3 text-4xl tracking-tight text-ink">Admin girişi</h1>
           <p className="mt-3 text-sm text-muted-foreground">
             Mesajları ve içerikleri yönetmek için oturum aç.

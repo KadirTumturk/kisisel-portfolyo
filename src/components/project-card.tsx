@@ -21,13 +21,13 @@ export function ProjectCard({
   featured?: boolean;
 }) {
   return (
-    <article className="group relative overflow-hidden border-b border-border py-8 first:pt-0">
+    <article className="project-row group py-8 first:pt-8 last:pb-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-2xl space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span>{year}</span>
+            <span className="tabular-nums">{year}</span>
             {featured ? (
-              <Badge variant="secondary" className="bg-clay/10 text-clay">
+              <Badge variant="secondary" className="bg-clay/10 text-clay hover:bg-clay/10">
                 Öne çıkan
               </Badge>
             ) : null}
@@ -40,7 +40,7 @@ export function ProjectCard({
             {technologies.map((t) => (
               <span
                 key={t.technology.name}
-                className="border border-border px-2 py-0.5 text-xs text-muted-foreground"
+                className="rounded-md bg-mist px-2 py-0.5 text-xs text-muted-foreground"
               >
                 {t.technology.name}
               </span>
@@ -49,7 +49,10 @@ export function ProjectCard({
         </div>
         <Link
           href={`/projeler/${slug}`}
-          className={cn(buttonVariants({ variant: "outline" }), "shrink-0")}
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "shrink-0 rounded-full border-ink/15 group-hover:border-clay group-hover:text-clay",
+          )}
         >
           İncele
         </Link>

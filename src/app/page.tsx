@@ -10,111 +10,172 @@ export default async function HomePage() {
   const profile = await requireProfile();
   const featured = profile.projects.filter((p) => p.featured);
   const projects = featured.length ? featured : profile.projects.slice(0, 2);
+  const initials = profile.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6 sm:pt-16">
-      <section className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16">
-        <div>
-          <p className="animate-fade text-sm uppercase tracking-[0.2em] text-clay">
-            {profile.location}
-          </p>
-          <h1 className="animate-rise font-heading mt-3 text-5xl leading-[0.95] tracking-tight text-ink sm:text-6xl lg:text-7xl">
-            {profile.name}
-          </h1>
-          <div className="animate-draw mt-5 h-px w-24 bg-clay delay-1" />
-          <p className="animate-rise delay-1 mt-5 font-heading text-2xl text-clay sm:text-3xl">
-            {profile.title}
-          </p>
+    <div>
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14">
+          <div className="relative z-10">
+            <p className="animate-fade text-xs font-medium uppercase tracking-[0.28em] text-clay sm:text-sm">
+              {profile.location} · Portfolyo
+            </p>
+            <h1 className="animate-rise font-heading mt-4 text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.92] tracking-tight text-ink">
+              {profile.name}
+            </h1>
+            <div className="animate-draw mt-6 h-[3px] w-16 bg-clay delay-1" />
+            <p className="animate-rise delay-1 mt-5 text-xl font-medium text-ink/80 sm:text-2xl">
+              {profile.title}
+            </p>
+            <p className="animate-rise delay-2 mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {profile.bio}
+            </p>
+            <div className="animate-rise delay-3 mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/iletisim"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "bg-clay px-5 text-primary-foreground hover:bg-clay/90",
+                )}
+              >
+                Bana ulaş
+              </Link>
+              <Link
+                href="/projeler"
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "px-5")}
+              >
+                Projeleri gör
+              </Link>
+              {profile.githubUrl ? (
+                <a
+                  href={profile.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
+                >
+                  GitHub
+                </a>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="animate-rise delay-2 relative mx-auto w-full max-w-md lg:max-w-none">
+            <div className="animate-float hero-panel relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] sm:aspect-[5/6]">
+              <div
+                className="absolute inset-0 opacity-30"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px)",
+                  backgroundSize: "28px 28px",
+                }}
+              />
+              <div className="absolute inset-0 flex flex-col justify-between p-7 text-white sm:p-9">
+                <div className="flex items-start justify-between gap-3">
+                  <span className="text-xs uppercase tracking-[0.22em] text-white/70">
+                    Full Stack
+                  </span>
+                  <span className="rounded-full border border-white/25 px-3 py-1 text-xs text-white/80">
+                    2025–2027
+                  </span>
+                </div>
+                <div>
+                  <p className="font-heading text-7xl leading-none tracking-tight sm:text-8xl">
+                    {initials}
+                  </p>
+                  <p className="mt-4 max-w-[14rem] text-sm leading-relaxed text-white/75">
+                    Web arayüzleri, MySQL ve temiz kod ile kullanıcı odaklı çözümler.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="animate-rise delay-2 space-y-6">
-          <p className="text-lg leading-relaxed text-muted-foreground">{profile.bio}</p>
-          <div className="flex flex-wrap gap-3">
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 pb-24 pt-16 sm:px-6 sm:pt-20">
+        <section>
+          <div className="mb-10 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">
+                Seçili işler
+              </p>
+              <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink sm:text-4xl">
+                Projeler
+              </h2>
+            </div>
             <Link
-              href="/iletisim"
-              className={cn(buttonVariants(), "bg-clay hover:bg-clay/90")}
+              href="/projeler"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-clay"
             >
-              Bana ulaş
+              Tümü →
             </Link>
-            <Link href="/projeler" className={cn(buttonVariants({ variant: "outline" }))}>
-              Projeleri gör
-            </Link>
-            {profile.githubUrl ? (
-              <a
-                href={profile.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className={cn(buttonVariants({ variant: "ghost" }))}
-              >
-                GitHub
-              </a>
-            ) : null}
           </div>
-        </div>
-      </section>
+          <div className="divide-y divide-border border-y border-border">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                slug={project.slug}
+                summary={project.summary}
+                year={project.year}
+                featured={project.featured}
+                technologies={project.technologies}
+              />
+            ))}
+          </div>
+        </section>
 
-      <section className="mt-20 sm:mt-28">
-        <div className="mb-8 flex items-end justify-between gap-4">
+        <section className="mt-20 grid gap-12 sm:mt-28 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-clay">Seçili işler</p>
-            <h2 className="font-heading mt-2 text-3xl text-ink sm:text-4xl">Projeler</h2>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">Yetenekler</p>
+            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">
+              Ne ile çalışıyorum
+            </h2>
+            <ul className="mt-7 flex flex-wrap gap-2.5">
+              {profile.skills.map((skill) => (
+                <li
+                  key={skill.id}
+                  className="rounded-full border border-border bg-white/80 px-3.5 py-1.5 text-sm text-ink shadow-[0_1px_0_rgba(11,13,16,0.04)]"
+                >
+                  {skill.name}
+                  {skill.level ? (
+                    <span className="ml-2 text-muted-foreground">{skill.level}</span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
           </div>
-          <Link href="/projeler" className="text-sm text-muted-foreground hover:text-clay">
-            Tümü →
-          </Link>
-        </div>
-        <div>
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              slug={project.slug}
-              summary={project.summary}
-              year={project.year}
-              featured={project.featured}
-              technologies={project.technologies}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-20 grid gap-10 border-t border-border pt-12 sm:mt-28 lg:grid-cols-2">
-        <div>
-          <p className="text-sm uppercase tracking-[0.18em] text-clay">Yetenekler</p>
-          <h2 className="font-heading mt-2 text-3xl text-ink">Ne ile çalışıyorum</h2>
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {profile.skills.map((skill) => (
-              <li
-                key={skill.id}
-                className="border border-border bg-card/40 px-3 py-1.5 text-sm text-ink"
-              >
-                {skill.name}
-                {skill.level ? (
-                  <span className="ml-2 text-muted-foreground">· {skill.level}</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm uppercase tracking-[0.18em] text-clay">Eğitim</p>
-          <h2 className="font-heading mt-2 text-3xl text-ink">Yolculuk</h2>
-          <ul className="mt-6 space-y-5">
-            {profile.experiences.map((exp) => (
-              <li key={exp.id} className="border-l-2 border-clay/40 pl-4">
-                <p className="text-sm text-muted-foreground">
-                  {exp.startYear}
-                  {exp.endYear ? `–${exp.endYear}` : "–"}
-                </p>
-                <p className="font-medium text-ink">{exp.organization}</p>
-                <p className="text-muted-foreground">{exp.role}</p>
-              </li>
-            ))}
-          </ul>
-          <Link href="/hakkinda" className="mt-4 inline-block text-sm text-clay hover:underline">
-            Daha fazla →
-          </Link>
-        </div>
-      </section>
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">Eğitim</p>
+            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">Yolculuk</h2>
+            <ul className="mt-7 space-y-6">
+              {profile.experiences.map((exp) => (
+                <li key={exp.id} className="relative border-l-2 border-clay/30 pl-5">
+                  <span className="absolute -left-[5px] top-1.5 size-2 rounded-full bg-clay" />
+                  <p className="text-sm text-muted-foreground">
+                    {exp.startYear}
+                    {exp.endYear ? `–${exp.endYear}` : "–"}
+                  </p>
+                  <p className="mt-1 font-medium text-ink">{exp.organization}</p>
+                  <p className="text-muted-foreground">{exp.role}</p>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/hakkinda"
+              className="mt-5 inline-block text-sm font-medium text-clay hover:underline"
+            >
+              Daha fazla →
+            </Link>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

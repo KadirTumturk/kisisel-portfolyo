@@ -49,9 +49,9 @@ export function SiteHeader({
             <Link
               href="/admin"
               className="ml-1 rounded-full bg-clay px-2.5 py-1 text-xs font-medium text-white"
-              title="Okunmamış mesaj"
+              title={dict.unreadMessages}
             >
-              {unreadCount} yeni
+              {unreadCount} {dict.newBadge}
             </Link>
           ) : null}
           <form action="/api/prefs" method="post" className="ml-1">

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { getProjectBySlug } from "@/lib/data";
+import { contentEn, getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/prefs";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -15,14 +17,22 @@ export default async function ProjectDetailPage({
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const en = contentEn.projects[project.slug];
+  const title = locale === "en" && en ? en.title : project.title;
+  const summary = locale === "en" && en ? en.summary : project.summary;
+  const description = locale === "en" && en ? en.description : project.description;
+  const role = locale === "en" && en ? en.role : project.role;
+
   return (
     <div className="mx-auto max-w-3xl px-4 pb-24 pt-12 sm:px-6">
       <Link href="/projeler" className="text-sm text-muted-foreground hover:text-clay">
-        ← Projeler
+        {dict.backToProjects}
       </Link>
       <p className="mt-6 text-sm text-muted-foreground">{project.year}</p>
-      <h1 className="font-heading mt-2 text-4xl text-ink sm:text-5xl">{project.title}</h1>
-      {project.role ? <p className="mt-3 text-clay">{project.role}</p> : null}
+      <h1 className="font-heading mt-2 text-4xl text-ink sm:text-5xl">{title}</h1>
+      {role ? <p className="mt-3 text-clay">{role}</p> : null}
       <div className="mt-6 flex flex-wrap gap-2">
         {project.technologies.map((t) => (
           <span
@@ -33,9 +43,9 @@ export default async function ProjectDetailPage({
           </span>
         ))}
       </div>
-      <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{project.summary}</p>
-      <div className="prose-p:leading-relaxed mt-6 space-y-4 text-base leading-relaxed text-ink/90">
-        {project.description.split("\n").map((para) => (
+      <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{summary}</p>
+      <div className="mt-6 space-y-4 text-base leading-relaxed text-ink/90">
+        {description.split("\n").map((para) => (
           <p key={para.slice(0, 24)}>{para}</p>
         ))}
       </div>
@@ -47,7 +57,7 @@ export default async function ProjectDetailPage({
             rel="noreferrer"
             className={cn(buttonVariants(), "bg-clay hover:bg-clay/90")}
           >
-            Canlı site
+            {dict.liveSite}
           </a>
         ) : null}
         {project.repoUrl ? (
@@ -61,9 +71,7 @@ export default async function ProjectDetailPage({
           </a>
         ) : null}
         {!project.liveUrl && !project.repoUrl ? (
-          <p className="text-sm text-muted-foreground">
-            Bu proje için canlı link bulunmuyor (ders / yerel demo).
-          </p>
+          <p className="text-sm text-muted-foreground">{dict.noLiveLink}</p>
         ) : null}
       </div>
     </div>

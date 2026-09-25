@@ -1,19 +1,24 @@
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
 import { requireProfile } from "@/lib/data";
-import { getDictionary } from "@/lib/i18n";
+import { contentEn, getDictionary, localizeLevel } from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "CV",
-};
+export async function generateMetadata() {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  return { title: dict.cv };
+}
 
 export default async function CvPage() {
   const profile = await requireProfile();
   const locale = await getLocale();
   const dict = getDictionary(locale);
+  const title = locale === "en" ? contentEn.title : profile.title;
+  const bio = locale === "en" ? contentEn.bio : profile.bio;
+  const location = locale === "en" ? contentEn.location : profile.location;
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-24 pt-12 sm:px-6">
@@ -28,13 +33,13 @@ export default async function CvPage() {
       <article className="rounded-3xl border border-border bg-card p-6 text-ink shadow-sm sm:p-10">
         <header className="border-b border-border pb-6">
           <h2 className="font-heading text-3xl">{profile.name}</h2>
-          <p className="mt-1 text-clay">{profile.title}</p>
+          <p className="mt-1 text-clay">{title}</p>
           <p className="mt-3 text-sm text-muted-foreground">
-            {profile.location}
+            {location}
             {profile.email ? ` · ${profile.email}` : ""}
             {profile.phone ? ` · ${profile.phone}` : ""}
           </p>
-          <p className="mt-4 leading-relaxed text-muted-foreground">{profile.bio}</p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">{bio}</p>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
             {profile.githubUrl ? (
               <a href={profile.githubUrl} className="text-clay hover:underline">
@@ -47,7 +52,7 @@ export default async function CvPage() {
               </a>
             ) : null}
             <Link href="/" className="text-clay hover:underline no-print">
-              Portfolio
+              {dict.portfolio}
             </Link>
           </div>
         </header>
@@ -55,12 +60,15 @@ export default async function CvPage() {
         <section className="mt-8">
           <h3 className="font-heading text-xl">{dict.skills}</h3>
           <ul className="mt-3 flex flex-wrap gap-2">
-            {profile.skills.map((s) => (
-              <li key={s.id} className="rounded-full border border-border px-3 py-1 text-sm">
-                {s.name}
-                {s.level ? ` · ${s.level}` : ""}
-              </li>
-            ))}
+            {profile.skills.map((s) => {
+              const level = localizeLevel(locale, s.level);
+              return (
+                <li key={s.id} className="rounded-full border border-border px-3 py-1 text-sm">
+                  {s.name}
+                  {level ? ` · ${level}` : ""}
+                </li>
+              );
+            })}
           </ul>
         </section>
 
@@ -74,10 +82,13 @@ export default async function CvPage() {
                   {e.endYear ? `–${e.endYear}` : "–"}
                 </p>
                 <p className="font-medium">
-                  {e.organization} — {e.role}
+                  {locale === "en" ? contentEn.experience.organization : e.organization} —{" "}
+                  {locale === "en" ? contentEn.experience.role : e.role}
                 </p>
                 {e.description ? (
-                  <p className="mt-1 text-sm text-muted-foreground">{e.description}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {locale === "en" ? contentEn.experience.description : e.description}
+                  </p>
                 ) : null}
               </li>
             ))}
@@ -87,17 +98,23 @@ export default async function CvPage() {
         <section className="mt-8">
           <h3 className="font-heading text-xl">{dict.projects}</h3>
           <ul className="mt-4 space-y-5">
-            {profile.projects.map((p) => (
-              <li key={p.id}>
-                <p className="font-medium">
-                  {p.title} <span className="text-muted-foreground">({p.year})</span>
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">{p.summary}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {p.technologies.map((t) => t.technology.name).join(" · ")}
-                </p>
-              </li>
-            ))}
+            {profile.projects.map((p) => {
+              const en = contentEn.projects[p.slug];
+              return (
+                <li key={p.id}>
+                  <p className="font-medium">
+                    {locale === "en" && en ? en.title : p.title}{" "}
+                    <span className="text-muted-foreground">({p.year})</span>
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {locale === "en" && en ? en.summary : p.summary}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {p.technologies.map((t) => t.technology.name).join(" · ")}
+                  </p>
+                </li>
+              );
+            })}
           </ul>
         </section>
       </article>

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { getDictionary } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
@@ -10,19 +12,21 @@ export async function POST(request: Request) {
   const subject = String(formData.get("subject") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
 
+  const jar = await cookies();
+  const locale = jar.get("locale")?.value === "en" ? "en" : "tr";
+  const dict = getDictionary(locale);
+
   const fail = (msg: string) =>
     NextResponse.redirect(
       new URL(`/iletisim?hata=${encodeURIComponent(msg)}`, request.url),
       303,
     );
 
-  if (name.length < 2) return fail("Ad en az 2 karakter olmalı");
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Geçerli bir e-posta gir");
-  if (phone.length < 10 || phone.length > 11) {
-    return fail("Telefon zorunlu · sadece 10–11 rakam (örn. 05421234567)");
-  }
-  if (subject.length < 2) return fail("Konu gerekli");
-  if (body.length < 10) return fail("Mesaj en az 10 karakter olmalı");
+  if (name.length < 2) return fail(dict.errName);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail(dict.errEmail);
+  if (phone.length < 10 || phone.length > 11) return fail(dict.errPhone);
+  if (subject.length < 2) return fail(dict.errSubject);
+  if (body.length < 10) return fail(dict.errMessage);
 
   await prisma.message.create({
     data: { name, email, phone, subject, body },

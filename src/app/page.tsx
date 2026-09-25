@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
 import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/data";
-import { getDictionary } from "@/lib/i18n";
+import { contentEn, getDictionary, localizeLevel } from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 import { trackVisit } from "@/lib/stats";
 import { cn } from "@/lib/utils";
@@ -24,23 +24,27 @@ export default async function HomePage() {
     .join("")
     .toUpperCase();
 
+  const title = locale === "en" ? contentEn.title : profile.title;
+  const bio = locale === "en" ? contentEn.bio : profile.bio;
+  const location = locale === "en" ? contentEn.location : profile.location;
+
   return (
     <div>
       <section className="relative overflow-hidden border-b border-border">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14">
           <div className="relative z-10">
             <p className="animate-fade text-xs font-medium uppercase tracking-[0.28em] text-clay sm:text-sm">
-              {profile.location} · Portfolyo
+              {location} · {dict.heroBadge}
             </p>
             <h1 className="animate-rise font-heading mt-4 text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.92] tracking-tight text-ink">
               {profile.name}
             </h1>
             <div className="animate-draw mt-6 h-[3px] w-16 bg-clay delay-1" />
             <p className="animate-rise delay-1 mt-5 text-xl font-medium text-ink/80 sm:text-2xl">
-              {profile.title}
+              {title}
             </p>
             <p className="animate-rise delay-2 mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {profile.bio}
+              {bio}
             </p>
             <div className="animate-rise delay-3 mt-8 flex flex-wrap gap-3">
               <Link
@@ -58,10 +62,7 @@ export default async function HomePage() {
               >
                 {dict.seeProjects}
               </Link>
-              <Link
-                href="/cv"
-                className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
-              >
+              <Link href="/cv" className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}>
                 {dict.downloadCv}
               </Link>
               {profile.githubUrl ? (
@@ -90,7 +91,7 @@ export default async function HomePage() {
               <div className="absolute inset-0 flex flex-col justify-between p-7 text-white sm:p-9">
                 <div className="flex items-start justify-between gap-3">
                   <span className="text-xs uppercase tracking-[0.22em] text-white/70">
-                    Full Stack
+                    {dict.fullStack}
                   </span>
                   <span className="rounded-full border border-white/25 px-3 py-1 text-xs text-white/80">
                     2025–2027
@@ -101,7 +102,7 @@ export default async function HomePage() {
                     {initials}
                   </p>
                   <p className="mt-4 max-w-[14rem] text-sm leading-relaxed text-white/75">
-                    Web arayüzleri, MySQL ve temiz kod ile kullanıcı odaklı çözümler.
+                    {dict.heroPanelText}
                   </p>
                 </div>
               </div>
@@ -129,17 +130,22 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="divide-y divide-border border-y border-border">
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                title={project.title}
-                slug={project.slug}
-                summary={project.summary}
-                year={project.year}
-                featured={project.featured}
-                technologies={project.technologies}
-              />
-            ))}
+            {projects.map((project) => {
+              const en = contentEn.projects[project.slug];
+              return (
+                <ProjectCard
+                  key={project.id}
+                  title={locale === "en" && en ? en.title : project.title}
+                  slug={project.slug}
+                  summary={locale === "en" && en ? en.summary : project.summary}
+                  year={project.year}
+                  featured={project.featured}
+                  technologies={project.technologies}
+                  featuredLabel={dict.featured}
+                  viewLabel={dict.view}
+                />
+              );
+            })}
           </div>
         </section>
 
@@ -153,18 +159,22 @@ export default async function HomePage() {
               {profile.skills.map((skill) => (
                 <li
                   key={skill.id}
-                  className="rounded-full border border-border bg-white/80 px-3.5 py-1.5 text-sm text-ink shadow-[0_1px_0_rgba(11,13,16,0.04)]"
+                  className="rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-sm text-ink shadow-[0_1px_0_rgba(11,13,16,0.04)]"
                 >
                   {skill.name}
                   {skill.level ? (
-                    <span className="ml-2 text-muted-foreground">{skill.level}</span>
+                    <span className="ml-2 text-muted-foreground">
+                      {localizeLevel(locale, skill.level)}
+                    </span>
                   ) : null}
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.education}</p>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">
+              {dict.education}
+            </p>
             <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">{dict.journey}</h2>
             <ul className="mt-7 space-y-6">
               {profile.experiences.map((exp) => (
@@ -174,8 +184,12 @@ export default async function HomePage() {
                     {exp.startYear}
                     {exp.endYear ? `–${exp.endYear}` : "–"}
                   </p>
-                  <p className="mt-1 font-medium text-ink">{exp.organization}</p>
-                  <p className="text-muted-foreground">{exp.role}</p>
+                  <p className="mt-1 font-medium text-ink">
+                    {locale === "en" ? contentEn.experience.organization : exp.organization}
+                  </p>
+                  <p className="text-muted-foreground">
+                    {locale === "en" ? contentEn.experience.role : exp.role}
+                  </p>
                 </li>
               ))}
             </ul>

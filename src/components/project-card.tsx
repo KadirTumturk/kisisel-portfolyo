@@ -12,6 +12,8 @@ export function ProjectCard({
   year,
   technologies,
   featured,
+  featuredLabel = "Öne çıkan",
+  viewLabel = "İncele",
 }: {
   title: string;
   slug: string;
@@ -19,6 +21,8 @@ export function ProjectCard({
   year: number;
   technologies: Tech[];
   featured?: boolean;
+  featuredLabel?: string;
+  viewLabel?: string;
 }) {
   return (
     <article className="project-row group py-8 first:pt-8 last:pb-8">
@@ -28,7 +32,7 @@ export function ProjectCard({
             <span className="tabular-nums">{year}</span>
             {featured ? (
               <Badge variant="secondary" className="bg-clay/10 text-clay hover:bg-clay/10">
-                Öne çıkan
+                {featuredLabel}
               </Badge>
             ) : null}
           </div>
@@ -54,7 +58,7 @@ export function ProjectCard({
             "shrink-0 rounded-full border-ink/15 group-hover:border-clay group-hover:text-clay",
           )}
         >
-          İncele
+          {viewLabel}
         </Link>
       </div>
     </article>

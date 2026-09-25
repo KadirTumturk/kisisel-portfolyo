@@ -17,14 +17,17 @@ const body = DM_Sans({
   variable: "--font-body",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Kadir Tümtürk — Full Stack Developer",
-    template: "%s · Kadir Tümtürk",
-  },
-  description:
-    "Ankara Üniversitesi Bilgisayar Programcılığı öğrencisi. Web arayüzleri, veri tabanı ve uygulama geliştirme portfolyosu.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  return {
+    title: {
+      default: "Kadir Tümtürk — Full Stack Developer",
+      template: "%s · Kadir Tümtürk",
+    },
+    description: dict.siteDescription,
+  };
+}
 
 export default async function RootLayout({
   children,

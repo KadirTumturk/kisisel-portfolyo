@@ -1,6 +1,8 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getDictionary } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 
 export async function submitContactAction(formData: FormData) {
@@ -10,13 +12,17 @@ export async function submitContactAction(formData: FormData) {
   const subject = String(formData.get("subject") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
 
-  if (name.length < 2) redirect("/iletisim?hata=" + encodeURIComponent("Ad en az 2 karakter olmalı"));
-  if (!email.includes("@")) redirect("/iletisim?hata=" + encodeURIComponent("Geçerli bir e-posta gir"));
+  const jar = await cookies();
+  const locale = jar.get("locale")?.value === "en" ? "en" : "tr";
+  const dict = getDictionary(locale);
+
+  if (name.length < 2) redirect("/iletisim?hata=" + encodeURIComponent(dict.errName));
+  if (!email.includes("@")) redirect("/iletisim?hata=" + encodeURIComponent(dict.errEmail));
   if (phone.length < 10 || phone.length > 11) {
-    redirect("/iletisim?hata=" + encodeURIComponent("Telefon zorunlu · sadece 10–11 rakam"));
+    redirect("/iletisim?hata=" + encodeURIComponent(dict.errPhone));
   }
-  if (subject.length < 2) redirect("/iletisim?hata=" + encodeURIComponent("Konu gerekli"));
-  if (body.length < 10) redirect("/iletisim?hata=" + encodeURIComponent("Mesaj en az 10 karakter olmalı"));
+  if (subject.length < 2) redirect("/iletisim?hata=" + encodeURIComponent(dict.errSubject));
+  if (body.length < 10) redirect("/iletisim?hata=" + encodeURIComponent(dict.errMessage));
 
   await prisma.message.create({
     data: { name, email, phone, subject, body },

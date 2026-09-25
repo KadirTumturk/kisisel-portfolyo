@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { submitContactAction } from "@/app/iletisim/actions";
 
@@ -17,29 +17,17 @@ export function ContactForm({
 }) {
   const router = useRouter();
   const [phone, setPhone] = useState("");
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(initialError ?? null);
-  const [success, setSuccess] = useState(Boolean(initialOk));
 
-  useEffect(() => {
-    setError(initialError ?? null);
-    setSuccess(Boolean(initialOk));
-  }, [initialError, initialOk]);
-
-  if (success) {
+  if (initialOk) {
     return (
       <div className="space-y-4 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(29,79,255,0.35)] sm:p-8">
         <h2 className="font-heading text-2xl text-ink">Teşekkürler</h2>
         <p className="text-muted-foreground">
-          Mesajın veri tabanına kaydedildi. Admin panelindeki Mesajlar sekmesinde görünür.
+          Mesajın veri tabanına kaydedildi. Admin → Mesajlar sekmesinde görebilirsin.
         </p>
         <button
           type="button"
-          onClick={() => {
-            setSuccess(false);
-            setError(null);
-            router.replace("/iletisim");
-          }}
+          onClick={() => router.replace("/iletisim")}
           className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm hover:bg-mist"
         >
           Yeni mesaj
@@ -53,20 +41,7 @@ export function ContactForm({
 
   return (
     <form
-      action={async (formData) => {
-        setPending(true);
-        setError(null);
-        try {
-          formData.set("phone", digitsOnly(phone || String(formData.get("phone") ?? "")));
-          await submitContactAction(formData);
-        } catch (err) {
-          // Next.js redirect() throws; ignore NEXT_REDIRECT
-          const digest = typeof err === "object" && err && "digest" in err ? String((err as { digest?: string }).digest) : "";
-          if (digest.includes("NEXT_REDIRECT")) return;
-          setError("Gönderilemedi. Tekrar dene.");
-          setPending(false);
-        }
-      }}
+      action={submitContactAction}
       className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -153,13 +128,12 @@ export function ContactForm({
           className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30"
         />
       </div>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {initialError ? <p className="text-sm text-destructive">{initialError}</p> : null}
       <button
         type="submit"
-        disabled={pending}
-        className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90 disabled:opacity-50"
+        className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90"
       >
-        {pending ? "Gönderiliyor..." : "Mesajı gönder"}
+        Mesajı gönder
       </button>
     </form>
   );

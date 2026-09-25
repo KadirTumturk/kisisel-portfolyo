@@ -60,6 +60,22 @@ async function main() {
     },
   });
 
+  const calc = await prisma.project.create({
+    data: {
+      profileId: profile.id,
+      title: "İleri seviye görsel hesap makinesi",
+      slug: "gorsel-hesap-makinesi",
+      summary:
+        "C++ ile arkadaşlarla geliştirilen, ileri düzey matematik işlemlerini yapan görsel arayüzlü hesap makinesi.",
+      description:
+        "C++ ile yazılmış görsel hesap makinesi. Temel dört işlemin ötesinde ileri düzey matematik işlemlerini destekler; arayüz ve hesaplama mantığı arkadaşlarla birlikte kurgulandı. Masaüstü ortamında çalışan, kullanıcı dostu bir araç olarak tasarlandı.",
+      year: 2025,
+      role: "Ekip projesi — C++ geliştirme",
+      featured: true,
+      sortOrder: 2,
+    },
+  });
+
   const cyber = await prisma.project.create({
     data: {
       profileId: profile.id,
@@ -72,22 +88,6 @@ async function main() {
       year: 2025,
       role: "Ekip / ders projesi",
       featured: true,
-      sortOrder: 2,
-    },
-  });
-
-  const calc = await prisma.project.create({
-    data: {
-      profileId: profile.id,
-      title: "İleri seviye görsel hesap makinesi",
-      slug: "gorsel-hesap-makinesi",
-      summary:
-        "Arkadaşlarla geliştirilen, görsel arayüzlü ileri seviye C++ hesap makinesi.",
-      description:
-        "C++ ile yazılmış, temel dört işlemin ötesine geçen görsel hesap makinesi. Takım çalışmasıyla arayüz ve hesaplama mantığı bir arada kurgulandı.",
-      year: 2025,
-      role: "Ekip projesi — C++ geliştirme",
-      featured: false,
       sortOrder: 3,
     },
   });

@@ -33,7 +33,7 @@ export default async function AdminLoginPage({
         </div>
         {hasError ? (
           <p className="text-sm text-destructive">
-            Şifre hatalı. Doğru şifre: <span className="font-mono">Ktby0128_</span> (K ve T büyük)
+            Şifre hatalı. Büyük/küçük harfe dikkat et (K ve T büyük, sonda alt çizgi _).
           </p>
         ) : null}
         <button

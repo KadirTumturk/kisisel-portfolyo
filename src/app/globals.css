@@ -46,38 +46,38 @@
 }
 
 :root {
-  --paper: #f3efe6;
-  --ink: #1c1914;
-  --clay: #b4532a;
-  --clay-soft: #d4a28a;
-  --mist: #e7e1d4;
-  --background: #f3efe6;
-  --foreground: #1c1914;
-  --card: #f8f4ec;
-  --card-foreground: #1c1914;
-  --popover: #f8f4ec;
-  --popover-foreground: #1c1914;
-  --primary: #b4532a;
-  --primary-foreground: #fff8f2;
-  --secondary: #e7e1d4;
-  --secondary-foreground: #1c1914;
-  --muted: #e7e1d4;
-  --muted-foreground: #5c564c;
-  --accent: #e7e1d4;
-  --accent-foreground: #1c1914;
+  --paper: #e9eef2;
+  --ink: #0e171c;
+  --clay: #0f766e;
+  --clay-soft: #5eead4;
+  --mist: #d7e0e7;
+  --background: #e9eef2;
+  --foreground: #0e171c;
+  --card: #f4f7f9;
+  --card-foreground: #0e171c;
+  --popover: #f4f7f9;
+  --popover-foreground: #0e171c;
+  --primary: #0f766e;
+  --primary-foreground: #ecfeff;
+  --secondary: #d7e0e7;
+  --secondary-foreground: #0e171c;
+  --muted: #d7e0e7;
+  --muted-foreground: #4b5c66;
+  --accent: #d7e0e7;
+  --accent-foreground: #0e171c;
   --destructive: #b42318;
-  --border: #d6cfbf;
-  --input: #d6cfbf;
-  --ring: #b4532a;
-  --radius: 0.4rem;
-  --sidebar: #f8f4ec;
-  --sidebar-foreground: #1c1914;
-  --sidebar-primary: #b4532a;
-  --sidebar-primary-foreground: #fff8f2;
-  --sidebar-accent: #e7e1d4;
-  --sidebar-accent-foreground: #1c1914;
-  --sidebar-border: #d6cfbf;
-  --sidebar-ring: #b4532a;
+  --border: #c5d0d8;
+  --input: #c5d0d8;
+  --ring: #0f766e;
+  --radius: 0.35rem;
+  --sidebar: #f4f7f9;
+  --sidebar-foreground: #0e171c;
+  --sidebar-primary: #0f766e;
+  --sidebar-primary-foreground: #ecfeff;
+  --sidebar-accent: #d7e0e7;
+  --sidebar-accent-foreground: #0e171c;
+  --sidebar-border: #c5d0d8;
+  --sidebar-ring: #0f766e;
 }
 
 @layer base {
@@ -90,9 +90,9 @@
   body {
     @apply bg-background text-foreground antialiased;
     background-image:
-      radial-gradient(ellipse 80% 50% at 10% -10%, rgba(180, 83, 42, 0.12), transparent 55%),
-      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(28, 25, 20, 0.06), transparent 50%),
-      linear-gradient(180deg, #f7f3ea 0%, #f3efe6 40%, #ebe4d6 100%);
+      radial-gradient(ellipse 70% 45% at 0% 0%, rgba(15, 118, 110, 0.14), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 10%, rgba(14, 23, 28, 0.06), transparent 50%),
+      linear-gradient(165deg, #f2f6f8 0%, #e9eef2 45%, #dde6ec 100%);
     background-attachment: fixed;
   }
 }

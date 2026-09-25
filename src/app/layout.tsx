@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { DM_Sans, Syne } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { prisma } from "@/lib/prisma";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Syne({
   subsets: ["latin", "latin-ext"],
   variable: "--font-display",
 });
 
-const body = Source_Sans_3({
+const body = DM_Sans({
   subsets: ["latin", "latin-ext"],
   variable: "--font-body",
 });

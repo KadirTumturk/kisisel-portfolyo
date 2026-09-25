@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 
-function onlyPhoneChars(value: string) {
-  return value.replace(/[^\d+\s()-]/g, "");
-}
-
-function normalizePhone(value: string) {
-  return value.replace(/[^\d+]/g, "");
+function digitsOnly(value: string) {
+  return value.replace(/\D/g, "");
 }
 
 export function ContactForm() {
@@ -21,17 +17,26 @@ export function ContactForm() {
     setError(null);
     const form = e.currentTarget;
     const raw = Object.fromEntries(new FormData(form).entries());
-    const data = {
-      ...raw,
-      phone: normalizePhone(String(raw.phone ?? "")),
-    };
+    const phoneDigits = digitsOnly(String(raw.phone ?? phone));
 
-    const digits = String(data.phone).replace(/\D/g, "");
-    if (digits.length > 0 && (digits.length < 10 || digits.length > 13)) {
+    if (!phoneDigits) {
       setStatus("error");
-      setError("Telefon 10–13 rakam olmalı (örn. 05421234567).");
+      setError("Telefon zorunlu. Sadece rakam gir.");
       return;
     }
+    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+      setStatus("error");
+      setError("Telefon 10 veya 11 rakam olmalı (örn. 05421234567).");
+      return;
+    }
+
+    const data = {
+      name: String(raw.name ?? ""),
+      email: String(raw.email ?? ""),
+      phone: phoneDigits,
+      subject: String(raw.subject ?? ""),
+      body: String(raw.body ?? ""),
+    };
 
     try {
       const res = await fetch("/api/messages", {
@@ -79,9 +84,7 @@ export function ContactForm() {
     <form
       onSubmit={onSubmit}
       method="post"
-      action="#"
       className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
-      noValidate
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
@@ -116,23 +119,43 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <label htmlFor="phone" className="text-sm font-medium">
-            Telefon
+            Telefon <span className="text-destructive">*</span>
           </label>
           <input
             id="phone"
             name="phone"
-            type="tel"
+            type="text"
             inputMode="numeric"
             autoComplete="tel"
-            maxLength={20}
-            placeholder="05xx xxx xx xx"
+            required
+            minLength={10}
+            maxLength={11}
+            placeholder="05421234567"
             value={phone}
-            onChange={(e) => setPhone(onlyPhoneChars(e.target.value))}
-            pattern="[\d\s+\()-]*"
-            title="Sadece rakam ve telefon işaretleri"
+            onChange={(e) => setPhone(digitsOnly(e.target.value))}
+            onKeyDown={(e) => {
+              const allowed = [
+                "Backspace",
+                "Delete",
+                "Tab",
+                "ArrowLeft",
+                "ArrowRight",
+                "Home",
+                "End",
+              ];
+              if (allowed.includes(e.key) || e.ctrlKey || e.metaKey) return;
+              if (!/^\d$/.test(e.key)) e.preventDefault();
+            }}
+            onPaste={(e) => {
+              e.preventDefault();
+              const text = e.clipboardData.getData("text");
+              setPhone(digitsOnly(text).slice(0, 11));
+            }}
+            pattern="[0-9]{10,11}"
+            title="Sadece rakam, 10 veya 11 hane"
             className={fieldClass}
           />
-          <p className="text-xs text-muted-foreground">Sadece numara (harf yok). Örn. 05421234567</p>
+          <p className="text-xs text-muted-foreground">Zorunlu · sadece rakam · 10–11 hane</p>
         </div>
         <div className="space-y-2">
           <label htmlFor="subject" className="text-sm font-medium">

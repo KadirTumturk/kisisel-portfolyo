@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { logoutAdminAction } from "@/app/admin/actions";
 
 type Message = {
   id: string;
@@ -60,10 +61,6 @@ export function AdminDashboard({
   const [error, setError] = useState<string | null>(null);
 
   const unread = messages.filter((m) => !m.read).length;
-
-  async function logout() {
-    window.location.href = "/admin/cikis";
-  }
 
   async function toggleRead(id: string, read: boolean) {
     await fetch(`/api/admin/messages/${id}`, {
@@ -152,13 +149,14 @@ export function AdminDashboard({
             <h1 className="font-heading mt-2 text-3xl tracking-tight sm:text-4xl">Admin</h1>
             <p className="mt-2 text-sm text-white/70">Mesaj kutusu ve proje içerikleri</p>
           </div>
-          <button
-            type="button"
-            onClick={logout}
-            className="rounded-full border border-white/25 px-4 py-2 text-sm text-white/90 transition hover:bg-white/10"
-          >
-            Çıkış
-          </button>
+          <form action={logoutAdminAction}>
+            <button
+              type="submit"
+              className="rounded-full border border-white/25 px-4 py-2 text-sm text-white/90 transition hover:bg-white/10"
+            >
+              Çıkış yap
+            </button>
+          </form>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
           <div className="rounded-2xl bg-white/10 px-4 py-3 backdrop-blur">

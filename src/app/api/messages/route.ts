@@ -2,25 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 
-const phoneSchema = z
-  .string()
-  .trim()
-  .optional()
-  .or(z.literal(""))
-  .refine((v) => {
-    if (!v) return true;
-    const digits = v.replace(/\D/g, "");
-    return digits.length >= 10 && digits.length <= 13;
-  }, "Telefon 10–13 rakam olmalı")
-  .refine((v) => {
-    if (!v) return true;
-    return /^[\d+\s()-]+$/.test(v) || /^\+?\d+$/.test(v.replace(/[\s()-]/g, ""));
-  }, "Telefonda sadece rakam kullanılabilir");
-
 const schema = z.object({
   name: z.string().trim().min(2, "Ad en az 2 karakter olmalı").max(80),
   email: z.string().trim().email("Geçerli bir e-posta gir"),
-  phone: phoneSchema,
+  phone: z
+    .string()
+    .trim()
+    .regex(/^\d{10,11}$/, "Telefon zorunlu ve sadece 10–11 rakam olmalı"),
   subject: z.string().trim().min(2, "Konu gerekli").max(120),
   body: z.string().trim().min(10, "Mesaj en az 10 karakter olmalı").max(2000),
 });
@@ -28,7 +16,10 @@ const schema = z.object({
 export async function POST(request: Request) {
   try {
     const json = await request.json();
-    const parsed = schema.safeParse(json);
+    const parsed = schema.safeParse({
+      ...json,
+      phone: String(json.phone ?? "").replace(/\D/g, ""),
+    });
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.issues[0]?.message ?? "Geçersiz form" },
@@ -41,7 +32,7 @@ export async function POST(request: Request) {
       data: {
         name,
         email,
-        phone: phone || null,
+        phone,
         subject,
         body,
       },

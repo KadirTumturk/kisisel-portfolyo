@@ -1,17 +1,31 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { Dictionary, Locale } from "@/lib/i18n";
 
-const links = [
-  { href: "/", label: "Ana sayfa" },
-  { href: "/projeler", label: "Projeler" },
-  { href: "/hakkinda", label: "Hakkında" },
-  { href: "/iletisim", label: "İletişim" },
-];
+export function SiteHeader({
+  name,
+  dict,
+  locale,
+  theme,
+  unreadCount = 0,
+}: {
+  name: string;
+  dict: Dictionary;
+  locale: Locale;
+  theme: "light" | "dark";
+  unreadCount?: number;
+}) {
+  const links = [
+    { href: "/", label: dict.home },
+    { href: "/projeler", label: dict.projects },
+    { href: "/hakkinda", label: dict.about },
+    { href: "/cv", label: dict.cv },
+    { href: "/iletisim", label: dict.contact },
+  ];
 
-export function SiteHeader({ name }: { name: string }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-white/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link
           href="/"
           className="font-heading text-lg font-semibold tracking-tight text-ink sm:text-xl"
@@ -19,18 +33,45 @@ export function SiteHeader({ name }: { name: string }) {
           {name}
           <span className="ml-1 text-clay">.</span>
         </Link>
-        <nav className="flex items-center gap-0.5 text-sm sm:gap-1">
+        <nav className="flex flex-wrap items-center gap-0.5 text-sm sm:gap-1">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:bg-mist hover:text-ink",
+                "rounded-full px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-mist hover:text-ink sm:px-3",
               )}
             >
               {link.label}
             </Link>
           ))}
+          {unreadCount > 0 ? (
+            <Link
+              href="/admin"
+              className="ml-1 rounded-full bg-clay px-2.5 py-1 text-xs font-medium text-white"
+              title="Okunmamış mesaj"
+            >
+              {unreadCount} yeni
+            </Link>
+          ) : null}
+          <form action="/api/prefs" method="post" className="ml-1">
+            <input type="hidden" name="locale" value={locale === "tr" ? "en" : "tr"} />
+            <button
+              type="submit"
+              className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
+            >
+              {locale === "tr" ? "EN" : "TR"}
+            </button>
+          </form>
+          <form action="/api/prefs" method="post">
+            <input type="hidden" name="theme" value={theme === "dark" ? "light" : "dark"} />
+            <button
+              type="submit"
+              className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
+            >
+              {theme === "dark" ? dict.themeLight : dict.themeDark}
+            </button>
+          </form>
         </nav>
       </div>
     </header>
@@ -45,7 +86,7 @@ export function SiteFooter({
   email: string;
 }) {
   return (
-    <footer className="mt-auto border-t border-border bg-white/60">
+    <footer className="mt-auto border-t border-border bg-background/60">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
           © {new Date().getFullYear()} {name}

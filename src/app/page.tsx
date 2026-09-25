@@ -2,11 +2,17 @@ import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
 import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/data";
+import { getDictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/prefs";
+import { trackVisit } from "@/lib/stats";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  await trackVisit();
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const profile = await requireProfile();
   const featured = profile.projects.filter((p) => p.featured);
   const projects = featured.length ? featured : profile.projects.slice(0, 2);
@@ -44,13 +50,19 @@ export default async function HomePage() {
                   "bg-clay px-5 text-primary-foreground hover:bg-clay/90",
                 )}
               >
-                Bana ulaş
+                {dict.reachOut}
               </Link>
               <Link
                 href="/projeler"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }), "px-5")}
               >
-                Projeleri gör
+                {dict.seeProjects}
+              </Link>
+              <Link
+                href="/cv"
+                className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
+              >
+                {dict.downloadCv}
               </Link>
               {profile.githubUrl ? (
                 <a
@@ -103,17 +115,17 @@ export default async function HomePage() {
           <div className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">
-                Seçili işler
+                {dict.selectedWork}
               </p>
               <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink sm:text-4xl">
-                Projeler
+                {dict.projects}
               </h2>
             </div>
             <Link
               href="/projeler"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-clay"
             >
-              Tümü →
+              {dict.all} →
             </Link>
           </div>
           <div className="divide-y divide-border border-y border-border">
@@ -133,9 +145,9 @@ export default async function HomePage() {
 
         <section className="mt-20 grid gap-12 sm:mt-28 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">Yetenekler</p>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.skills}</p>
             <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">
-              Ne ile çalışıyorum
+              {dict.skillsTitle}
             </h2>
             <ul className="mt-7 flex flex-wrap gap-2.5">
               {profile.skills.map((skill) => (
@@ -152,8 +164,8 @@ export default async function HomePage() {
             </ul>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">Eğitim</p>
-            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">Yolculuk</h2>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.education}</p>
+            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">{dict.journey}</h2>
             <ul className="mt-7 space-y-6">
               {profile.experiences.map((exp) => (
                 <li key={exp.id} className="relative border-l-2 border-clay/30 pl-5">
@@ -171,7 +183,7 @@ export default async function HomePage() {
               href="/hakkinda"
               className="mt-5 inline-block text-sm font-medium text-clay hover:underline"
             >
-              Daha fazla →
+              {dict.more} →
             </Link>
           </div>
         </section>

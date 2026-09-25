@@ -80,6 +80,40 @@
   --sidebar-ring: #1d4fff;
 }
 
+.dark {
+  --paper: #0d1117;
+  --ink: #f3f6fb;
+  --clay: #6b8cff;
+  --clay-soft: #9db4ff;
+  --mist: #1a2230;
+  --background: #0d1117;
+  --foreground: #f3f6fb;
+  --card: #141b26;
+  --card-foreground: #f3f6fb;
+  --popover: #141b26;
+  --popover-foreground: #f3f6fb;
+  --primary: #6b8cff;
+  --primary-foreground: #0b0d10;
+  --secondary: #1a2230;
+  --secondary-foreground: #f3f6fb;
+  --muted: #1a2230;
+  --muted-foreground: #9aa6b8;
+  --accent: #1a2230;
+  --accent-foreground: #f3f6fb;
+  --destructive: #ff6b6b;
+  --border: #273246;
+  --input: #273246;
+  --ring: #6b8cff;
+  --sidebar: #141b26;
+  --sidebar-foreground: #f3f6fb;
+  --sidebar-primary: #6b8cff;
+  --sidebar-primary-foreground: #0b0d10;
+  --sidebar-accent: #1a2230;
+  --sidebar-accent-foreground: #f3f6fb;
+  --sidebar-border: #273246;
+  --sidebar-ring: #6b8cff;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -89,7 +123,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    background-color: #ffffff;
+    background-color: var(--background);
     background-image:
       linear-gradient(180deg, rgba(29, 79, 255, 0.04) 0%, transparent 28%),
       radial-gradient(ellipse 90% 60% at 100% -10%, rgba(29, 79, 255, 0.12), transparent 55%),
@@ -103,6 +137,28 @@
       48px 48px,
       48px 48px;
     background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      linear-gradient(180deg, rgba(107, 140, 255, 0.08) 0%, transparent 30%),
+      radial-gradient(ellipse 90% 60% at 100% -10%, rgba(107, 140, 255, 0.16), transparent 55%),
+      radial-gradient(ellipse 50% 40% at -5% 40%, rgba(0, 0, 0, 0.35), transparent 50%),
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  @media print {
+    body {
+      background: white !important;
+      background-image: none !important;
+      color: black !important;
+    }
+    header,
+    footer,
+    .no-print {
+      display: none !important;
+    }
   }
 }
 

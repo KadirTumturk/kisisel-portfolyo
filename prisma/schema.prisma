@@ -116,3 +116,11 @@ model Message {
 
   @@map("messages")
 }
+
+model SiteStat {
+  id          Int      @id @default(1)
+  visitCount  Int      @default(0) @map("visit_count")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("site_stats")
+}

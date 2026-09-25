@@ -128,6 +128,12 @@ async function main() {
     },
   });
 
+  await prisma.siteStat.upsert({
+    where: { id: 1 },
+    create: { id: 1, visitCount: 0 },
+    update: {},
+  });
+
   console.log("Seed tamamlandı:", profile.name);
 }
 

@@ -1,5 +1,11 @@
 import { requireProfile } from "@/lib/data";
-import { contentEn, getDictionary, localizeLevel } from "@/lib/i18n";
+import {
+  contentEn,
+  getDictionary,
+  localizeCategory,
+  localizeLevel,
+  localizeSkillName,
+} from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 
 export const dynamic = "force-dynamic";
@@ -55,11 +61,14 @@ export default async function AboutPage() {
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {profile.skills.map((skill) => {
             const level = localizeLevel(locale, skill.level);
+            const category = localizeCategory(locale, skill.category);
             return (
               <li key={skill.id} className="border border-border bg-card/40 px-4 py-3">
-                <p className="font-medium text-ink">{skill.name}</p>
+                <p className="font-medium text-ink">
+                  {localizeSkillName(locale, skill.name)}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  {[skill.category, level].filter(Boolean).join(" · ")}
+                  {[category, level].filter(Boolean).join(" · ")}
                 </p>
               </li>
             );

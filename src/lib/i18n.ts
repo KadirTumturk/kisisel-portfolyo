@@ -181,10 +181,30 @@ export const contentEn = {
     Orta: "Intermediate",
     İyi: "Advanced",
   } as Record<string, string>,
+  skillCategories: {
+    Frontend: "Frontend",
+    "Veri tabanı": "Database",
+    Dil: "Language",
+    Diğer: "Other",
+  } as Record<string, string>,
+  skillNames: {
+    "Yapay Zeka": "Artificial Intelligence",
+  } as Record<string, string>,
 };
 
 export function localizeLevel(locale: Locale, level: string | null | undefined) {
   if (!level) return null;
   if (locale === "en") return contentEn.skillLevels[level] ?? level;
   return level;
+}
+
+export function localizeSkillName(locale: Locale, name: string) {
+  if (locale === "en") return contentEn.skillNames[name] ?? name;
+  return name;
+}
+
+export function localizeCategory(locale: Locale, category: string | null | undefined) {
+  if (!category) return null;
+  if (locale === "en") return contentEn.skillCategories[category] ?? category;
+  return category;
 }

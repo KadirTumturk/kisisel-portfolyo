@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
 import { requireProfile } from "@/lib/data";
-import { contentEn, getDictionary, localizeLevel } from "@/lib/i18n";
+import { contentEn, getDictionary, localizeLevel, localizeSkillName } from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 
 export const dynamic = "force-dynamic";
@@ -64,7 +64,7 @@ export default async function CvPage() {
               const level = localizeLevel(locale, s.level);
               return (
                 <li key={s.id} className="rounded-full border border-border px-3 py-1 text-sm">
-                  {s.name}
+                  {localizeSkillName(locale, s.name)}
                   {level ? ` · ${level}` : ""}
                 </li>
               );

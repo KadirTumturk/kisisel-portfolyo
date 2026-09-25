@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
 import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/data";
-import { contentEn, getDictionary, localizeLevel } from "@/lib/i18n";
+import { contentEn, getDictionary, localizeLevel, localizeSkillName } from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 import { trackVisit } from "@/lib/stats";
 import { cn } from "@/lib/utils";
@@ -161,7 +161,7 @@ export default async function HomePage() {
                   key={skill.id}
                   className="rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-sm text-ink shadow-[0_1px_0_rgba(11,13,16,0.04)]"
                 >
-                  {skill.name}
+                  {localizeSkillName(locale, skill.name)}
                   {skill.level ? (
                     <span className="ml-2 text-muted-foreground">
                       {localizeLevel(locale, skill.level)}

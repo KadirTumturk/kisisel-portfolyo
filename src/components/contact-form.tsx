@@ -1,77 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { submitContactAction } from "@/app/iletisim/actions";
 
 function digitsOnly(value: string) {
   return value.replace(/\D/g, "");
 }
 
-export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
+export function ContactForm({
+  initialError,
+  initialOk,
+}: {
+  initialError?: string;
+  initialOk?: boolean;
+}) {
+  const router = useRouter();
   const [phone, setPhone] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(initialError ?? null);
+  const [success, setSuccess] = useState(Boolean(initialOk));
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("loading");
-    setError(null);
-    const form = e.currentTarget;
-    const raw = Object.fromEntries(new FormData(form).entries());
-    const phoneDigits = digitsOnly(String(raw.phone ?? phone));
+  useEffect(() => {
+    setError(initialError ?? null);
+    setSuccess(Boolean(initialOk));
+  }, [initialError, initialOk]);
 
-    if (!phoneDigits) {
-      setStatus("error");
-      setError("Telefon zorunlu. Sadece rakam gir.");
-      return;
-    }
-    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
-      setStatus("error");
-      setError("Telefon 10 veya 11 rakam olmalı (örn. 05421234567).");
-      return;
-    }
-
-    const data = {
-      name: String(raw.name ?? ""),
-      email: String(raw.email ?? ""),
-      phone: phoneDigits,
-      subject: String(raw.subject ?? ""),
-      body: String(raw.body ?? ""),
-    };
-
-    try {
-      const res = await fetch("/api/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setStatus("error");
-        setError(json.error ?? "Mesaj gönderilemedi.");
-        return;
-      }
-      setStatus("success");
-      setPhone("");
-      form.reset();
-    } catch {
-      setStatus("error");
-      setError("Bağlantı hatası. Lütfen tekrar deneyin.");
-    }
-  }
-
-  const fieldClass =
-    "h-10 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30";
-
-  if (status === "success") {
+  if (success) {
     return (
       <div className="space-y-4 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(29,79,255,0.35)] sm:p-8">
         <h2 className="font-heading text-2xl text-ink">Teşekkürler</h2>
         <p className="text-muted-foreground">
-          Mesajın veri tabanına kaydedildi. En kısa sürede dönüş yapacağım.
+          Mesajın veri tabanına kaydedildi. Admin panelindeki Mesajlar sekmesinde görünür.
         </p>
         <button
           type="button"
-          onClick={() => setStatus("idle")}
+          onClick={() => {
+            setSuccess(false);
+            setError(null);
+            router.replace("/iletisim");
+          }}
           className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm hover:bg-mist"
         >
           Yeni mesaj
@@ -80,10 +48,25 @@ export function ContactForm() {
     );
   }
 
+  const fieldClass =
+    "h-10 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/30";
+
   return (
     <form
-      onSubmit={onSubmit}
-      method="post"
+      action={async (formData) => {
+        setPending(true);
+        setError(null);
+        try {
+          formData.set("phone", digitsOnly(phone || String(formData.get("phone") ?? "")));
+          await submitContactAction(formData);
+        } catch (err) {
+          // Next.js redirect() throws; ignore NEXT_REDIRECT
+          const digest = typeof err === "object" && err && "digest" in err ? String((err as { digest?: string }).digest) : "";
+          if (digest.includes("NEXT_REDIRECT")) return;
+          setError("Gönderilemedi. Tekrar dene.");
+          setPending(false);
+        }
+      }}
       className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -91,15 +74,7 @@ export function ContactForm() {
           <label htmlFor="name" className="text-sm font-medium">
             Ad Soyad
           </label>
-          <input
-            id="name"
-            name="name"
-            required
-            minLength={2}
-            maxLength={80}
-            placeholder="Adın"
-            className={fieldClass}
-          />
+          <input id="name" name="name" required minLength={2} maxLength={80} placeholder="Adın" className={fieldClass} />
         </div>
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium">
@@ -134,22 +109,13 @@ export function ContactForm() {
             value={phone}
             onChange={(e) => setPhone(digitsOnly(e.target.value))}
             onKeyDown={(e) => {
-              const allowed = [
-                "Backspace",
-                "Delete",
-                "Tab",
-                "ArrowLeft",
-                "ArrowRight",
-                "Home",
-                "End",
-              ];
+              const allowed = ["Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight", "Home", "End"];
               if (allowed.includes(e.key) || e.ctrlKey || e.metaKey) return;
               if (!/^\d$/.test(e.key)) e.preventDefault();
             }}
             onPaste={(e) => {
               e.preventDefault();
-              const text = e.clipboardData.getData("text");
-              setPhone(digitsOnly(text).slice(0, 11));
+              setPhone(digitsOnly(e.clipboardData.getData("text")).slice(0, 11));
             }}
             pattern="[0-9]{10,11}"
             title="Sadece rakam, 10 veya 11 hane"
@@ -190,10 +156,10 @@ export function ContactForm() {
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
       <button
         type="submit"
-        disabled={status === "loading"}
+        disabled={pending}
         className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90 disabled:opacity-50"
       >
-        {status === "loading" ? "Gönderiliyor..." : "Mesajı gönder"}
+        {pending ? "Gönderiliyor..." : "Mesajı gönder"}
       </button>
     </form>
   );

@@ -7,8 +7,13 @@ export const metadata = {
   title: "İletişim",
 };
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string; hata?: string }>;
+}) {
   const profile = await requireProfile();
+  const params = await searchParams;
 
   return (
     <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
@@ -19,7 +24,7 @@ export default async function ContactPage() {
         </h1>
         <p className="mt-4 max-w-md text-muted-foreground">
           Proje, staj veya iş birliği için formu doldurman yeterli. Mesajın doğrudan veri
-          tabanıma düşer.
+          tabanıma düşer; admin panelinden görürüm.
         </p>
         <dl className="mt-10 space-y-5 text-sm">
           <div>
@@ -42,7 +47,10 @@ export default async function ContactPage() {
           </div>
         </dl>
       </div>
-      <ContactForm />
+      <ContactForm
+        initialOk={params.ok === "1"}
+        initialError={params.hata ? decodeURIComponent(params.hata) : undefined}
+      />
     </div>
   );
 }

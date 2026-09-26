@@ -73,6 +73,17 @@ export default async function ContactPage({
           method="post"
           className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
         >
+          <div className="hidden" aria-hidden>
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+              className={fieldClass}
+            />
+          </div>
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">

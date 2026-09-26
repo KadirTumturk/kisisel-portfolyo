@@ -63,8 +63,10 @@ export const dictionaries = {
     errPhone: "Telefon zorunlu · sadece 10–11 rakam (örn. 05421234567)",
     errSubject: "Konu gerekli",
     errMessage: "Mesaj en az 10 karakter olmalı",
+    errRateLimited: "Çok fazla istek gönderildi. Lütfen biraz bekleyip tekrar dene.",
     siteDescription:
       "Ankara Üniversitesi Bilgisayar Programcılığı öğrencisi. Web arayüzleri, veri tabanı ve uygulama geliştirme portfolyosu.",
+    downloadPdf: "PDF indir",
   },
   en: {
     home: "Home",
@@ -128,8 +130,10 @@ export const dictionaries = {
     errPhone: "Phone required · digits only · 10–11 digits (e.g. 05421234567)",
     errSubject: "Subject is required",
     errMessage: "Message must be at least 10 characters",
+    errRateLimited: "Too many requests. Please wait a bit and try again.",
     siteDescription:
       "Computer Programming student at Ankara University. Portfolio of web interfaces, databases, and application development.",
+    downloadPdf: "Download PDF",
   },
 } as const;
 

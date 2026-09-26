@@ -3,6 +3,7 @@ import {
   contentEn,
   getDictionary,
   localizeCategory,
+  localizeExperience,
   localizeLevel,
   localizeSkillName,
 } from "@/lib/i18n";
@@ -32,27 +33,29 @@ export default async function AboutPage() {
       <section className="mt-14">
         <h2 className="font-heading text-2xl text-ink">{dict.educationExperience}</h2>
         <ol className="mt-8 space-y-8">
-          {profile.experiences.map((exp) => (
-            <li key={exp.id} className="grid gap-2 border-l-2 border-clay/50 pl-5 sm:grid-cols-[7rem_1fr]">
+          {profile.experiences.map((exp) => {
+            const localized = localizeExperience(locale, exp);
+            return (
+              <li
+                key={exp.id}
+                className="grid gap-2 border-l-2 border-clay/50 pl-5 sm:grid-cols-[7rem_1fr]"
+              >
               <span className="text-sm text-muted-foreground">
                 {exp.startYear}
                 {exp.endYear ? `–${exp.endYear}` : "–"}
               </span>
               <div>
-                <p className="font-medium text-ink">
-                  {locale === "en" ? contentEn.experience.organization : exp.organization}
-                </p>
-                <p className="text-clay">
-                  {locale === "en" ? contentEn.experience.role : exp.role}
-                </p>
-                {exp.description ? (
+                <p className="font-medium text-ink">{localized.organization}</p>
+                <p className="text-clay">{localized.role}</p>
+                {localized.description ? (
                   <p className="mt-2 text-muted-foreground">
-                    {locale === "en" ? contentEn.experience.description : exp.description}
+                    {localized.description}
                   </p>
                 ) : null}
               </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ol>
       </section>
 

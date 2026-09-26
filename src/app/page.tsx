@@ -3,7 +3,13 @@ import Image from "next/image";
 import { ProjectCard } from "@/components/project-card";
 import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/data";
-import { contentEn, getDictionary, localizeLevel, localizeSkillName } from "@/lib/i18n";
+import {
+  contentEn,
+  getDictionary,
+  localizeExperience,
+  localizeLevel,
+  localizeSkillName,
+} from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 import { trackVisit } from "@/lib/stats";
 import { cn } from "@/lib/utils";
@@ -156,21 +162,20 @@ export default async function HomePage() {
             </p>
             <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">{dict.journey}</h2>
             <ul className="mt-7 space-y-6">
-              {profile.experiences.map((exp) => (
-                <li key={exp.id} className="relative border-l-2 border-clay/30 pl-5">
+              {profile.experiences.map((exp) => {
+                const localized = localizeExperience(locale, exp);
+                return (
+                  <li key={exp.id} className="relative border-l-2 border-clay/30 pl-5">
                   <span className="absolute -left-[5px] top-1.5 size-2 rounded-full bg-clay" />
                   <p className="text-sm text-muted-foreground">
                     {exp.startYear}
                     {exp.endYear ? `–${exp.endYear}` : "–"}
                   </p>
-                  <p className="mt-1 font-medium text-ink">
-                    {locale === "en" ? contentEn.experience.organization : exp.organization}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {locale === "en" ? contentEn.experience.role : exp.role}
-                  </p>
+                  <p className="mt-1 font-medium text-ink">{localized.organization}</p>
+                  <p className="text-muted-foreground">{localized.role}</p>
                 </li>
-              ))}
+                );
+              })}
             </ul>
             <Link
               href="/hakkinda"

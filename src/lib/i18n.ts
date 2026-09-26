@@ -144,12 +144,14 @@ export const contentEn = {
   title: "Full Stack Developer",
   bio: "I am a Computer Programming student at Ankara University and a software developer. I build modern web interfaces and dynamic systems with C++, HTML, CSS, and JavaScript. I focus on user-centered, practical solutions with project management and clean code principles.",
   location: "Ankara",
-  experience: {
-    organization: "Ankara University",
-    role: "Computer Programming Student",
-    description:
-      "I build applied projects through software development, database, and cybersecurity coursework.",
-  },
+  experiences: {
+    "Ankara Üniversitesi|Bilgisayar Programcılığı Öğrencisi": {
+      organization: "Ankara University",
+      role: "Computer Programming Student",
+      description:
+        "I build applied projects through software development, database, and cybersecurity coursework.",
+    },
+  } as Record<string, { organization: string; role: string; description?: string }>,
   projects: {
     "focus-frame": {
       title: "Focus.Frame",
@@ -207,4 +209,19 @@ export function localizeCategory(locale: Locale, category: string | null | undef
   if (!category) return null;
   if (locale === "en") return contentEn.skillCategories[category] ?? category;
   return category;
+}
+
+export function localizeExperience<
+  T extends { organization: string; role: string; description?: string | null },
+>(locale: Locale, exp: T): T {
+  if (locale !== "en") return exp;
+  const key = `${exp.organization}|${exp.role}`;
+  const mapped = contentEn.experiences[key];
+  if (!mapped) return exp;
+  return {
+    ...exp,
+    organization: mapped.organization ?? exp.organization,
+    role: mapped.role ?? exp.role,
+    description: mapped.description ?? exp.description,
+  };
 }

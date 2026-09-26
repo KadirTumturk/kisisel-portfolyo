@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
 import { requireProfile } from "@/lib/data";
-import { contentEn, getDictionary, localizeLevel, localizeSkillName } from "@/lib/i18n";
+import {
+  contentEn,
+  getDictionary,
+  localizeExperience,
+  localizeLevel,
+  localizeSkillName,
+} from "@/lib/i18n";
 import { getLocale } from "@/lib/prefs";
 
 export const dynamic = "force-dynamic";
@@ -75,23 +81,25 @@ export default async function CvPage() {
         <section className="mt-8">
           <h3 className="font-heading text-xl">{dict.education}</h3>
           <ul className="mt-4 space-y-4">
-            {profile.experiences.map((e) => (
-              <li key={e.id}>
+            {profile.experiences.map((e) => {
+              const localized = localizeExperience(locale, e);
+              return (
+                <li key={e.id}>
                 <p className="text-sm text-muted-foreground">
                   {e.startYear}
                   {e.endYear ? `–${e.endYear}` : "–"}
                 </p>
                 <p className="font-medium">
-                  {locale === "en" ? contentEn.experience.organization : e.organization} —{" "}
-                  {locale === "en" ? contentEn.experience.role : e.role}
+                  {localized.organization} — {localized.role}
                 </p>
-                {e.description ? (
+                {localized.description ? (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {locale === "en" ? contentEn.experience.description : e.description}
+                    {localized.description}
                   </p>
                 ) : null}
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </section>
 

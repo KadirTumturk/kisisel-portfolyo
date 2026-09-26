@@ -32,6 +32,9 @@ cp .env.example .env
 npm run security:check
 ```
 
+- Admin paneli şifresi ve session secret yalnızca sunucu `.env` dosyasında durur; tarayıcıya gitmez.
+- Canlıya alırken `ADMIN_PASSWORD` ve `ADMIN_SESSION_SECRET` değerlerini uzun/rastgele yapın. `httpOnly` cookie HTTPS’te `Secure` olur.
+
 ### 2) MySQL
 
 **Seçenek A — Native MySQL (Installer kurduysan)**

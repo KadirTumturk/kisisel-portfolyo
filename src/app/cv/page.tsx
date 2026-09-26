@@ -33,7 +33,15 @@ export default async function CvPage() {
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.cv}</p>
           <h1 className="font-heading mt-2 text-4xl text-ink">{profile.name}</h1>
         </div>
-        <PrintButton label={dict.printCv} />
+        <div className="flex flex-wrap items-center gap-2">
+          <a
+            href="/api/cv/pdf"
+            className="rounded-full bg-clay px-4 py-2 text-sm font-medium text-white hover:bg-clay/90"
+          >
+            {dict.downloadPdf}
+          </a>
+          <PrintButton label={dict.printCv} />
+        </div>
       </div>
 
       <article className="rounded-3xl border border-border bg-card p-6 text-ink shadow-sm sm:p-10">

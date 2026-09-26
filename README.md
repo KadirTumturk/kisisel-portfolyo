@@ -23,6 +23,15 @@ cp .env.example .env
 - `ADMIN_PASSWORD` — admin paneli şifresi
 - `ADMIN_SESSION_SECRET` — uzun rastgele metin
 
+## Güvenlik notları
+
+- **Secret / API key’i asla** `NEXT_PUBLIC_...` ile tanımlamayın. `NEXT_PUBLIC_*` değişkenleri tarayıcıya gömülür ve kolayca görülebilir.
+- Bu repo, yanlışlıkla secret commit etmeyi engellemek için basit bir secret taraması içerir:
+
+```bash
+npm run security:check
+```
+
 ### 2) MySQL
 
 **Seçenek A — Native MySQL (Installer kurduysan)**

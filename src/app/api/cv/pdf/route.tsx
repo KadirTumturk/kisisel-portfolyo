@@ -129,8 +129,9 @@ export async function GET() {
 
   const buffer = await renderToBuffer(doc);
   const filename = `Kadir-Tumturk-CV-${locale.toUpperCase()}.pdf`;
+  const bytes = new Uint8Array(buffer);
 
-  return new NextResponse(buffer, {
+  return new NextResponse(bytes, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename=\"${filename}\"`,

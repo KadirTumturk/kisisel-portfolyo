@@ -72,7 +72,7 @@ export default async function RootLayout({
         <div className="no-print fixed inset-x-0 bottom-4 z-30 flex justify-center px-4 sm:hidden">
           <a
             href="/iletisim"
-            className="rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_30px_-10px_rgba(29,79,255,0.7)]"
+            className="rounded-md bg-clay px-5 py-2.5 text-sm font-medium text-white shadow-md"
           >
             {dict.reachOut}
           </a>

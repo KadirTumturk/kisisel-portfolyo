@@ -30,13 +30,13 @@ export default async function CvPage() {
     <div className="mx-auto max-w-3xl px-4 pb-24 pt-12 sm:px-6">
       <div className="no-print mb-8 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.cv}</p>
+          <p className="section-label">{dict.cv}</p>
           <h1 className="font-heading mt-2 text-4xl text-ink">{profile.name}</h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <a
             href="/api/cv/pdf"
-            className="rounded-full bg-clay px-4 py-2 text-sm font-medium text-white hover:bg-clay/90"
+            className="rounded-md bg-clay px-4 py-2 text-sm font-medium text-white hover:bg-clay/90"
           >
             {dict.downloadPdf}
           </a>
@@ -77,7 +77,7 @@ export default async function CvPage() {
             {profile.skills.map((s) => {
               const level = localizeLevel(locale, s.level);
               return (
-                <li key={s.id} className="rounded-full border border-border px-3 py-1 text-sm">
+                <li key={s.id} className="border border-border px-3 py-1 text-sm">
                   {localizeSkillName(locale, s.name)}
                   {level ? ` · ${level}` : ""}
                 </li>

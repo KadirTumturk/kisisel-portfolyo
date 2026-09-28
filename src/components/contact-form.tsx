@@ -20,7 +20,7 @@ export function ContactForm({
 
   if (initialOk) {
     return (
-      <div className="space-y-4 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(29,79,255,0.35)] sm:p-8">
+      <div className="space-y-4 border border-border bg-card p-6 sm:p-8">
         <h2 className="font-heading text-2xl text-ink">Teşekkürler</h2>
         <p className="text-muted-foreground">
           Mesajın veri tabanına kaydedildi. Admin → Mesajlar sekmesinde görebilirsin.
@@ -28,7 +28,7 @@ export function ContactForm({
         <button
           type="button"
           onClick={() => router.replace("/iletisim")}
-          className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm hover:bg-mist"
+          className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm hover:bg-mist"
         >
           Yeni mesaj
         </button>
@@ -42,7 +42,7 @@ export function ContactForm({
   return (
     <form
       action={submitContactAction}
-      className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
+      className="space-y-5 border border-border bg-card p-6 sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
@@ -131,7 +131,7 @@ export function ContactForm({
       {initialError ? <p className="text-sm text-destructive">{initialError}</p> : null}
       <button
         type="submit"
-        className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90"
+        className="inline-flex h-10 items-center justify-center rounded-md bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90"
       >
         Mesajı gönder
       </button>

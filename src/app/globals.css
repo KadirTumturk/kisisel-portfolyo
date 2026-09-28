@@ -125,27 +125,16 @@
     @apply bg-background text-foreground antialiased;
     background-color: var(--background);
     background-image:
-      linear-gradient(180deg, rgba(29, 79, 255, 0.04) 0%, transparent 28%),
-      radial-gradient(ellipse 90% 60% at 100% -10%, rgba(29, 79, 255, 0.12), transparent 55%),
-      radial-gradient(ellipse 50% 40% at -5% 40%, rgba(11, 13, 16, 0.04), transparent 50%),
-      linear-gradient(rgba(11, 13, 16, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(11, 13, 16, 0.035) 1px, transparent 1px);
-    background-size:
-      auto,
-      auto,
-      auto,
-      48px 48px,
-      48px 48px;
-    background-attachment: fixed;
+      linear-gradient(180deg, #f7f8fb 0%, #ffffff 42%),
+      linear-gradient(rgba(11, 13, 16, 0.045) 1px, transparent 1px);
+    background-size: auto, 100% 28px;
+    background-attachment: scroll;
   }
 
   .dark body {
     background-image:
-      linear-gradient(180deg, rgba(107, 140, 255, 0.08) 0%, transparent 30%),
-      radial-gradient(ellipse 90% 60% at 100% -10%, rgba(107, 140, 255, 0.16), transparent 55%),
-      radial-gradient(ellipse 50% 40% at -5% 40%, rgba(0, 0, 0, 0.35), transparent 50%),
-      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      linear-gradient(180deg, #10151e 0%, #0d1117 42%),
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   }
 
   @media print {
@@ -162,26 +151,6 @@
   }
 }
 
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes draw-line {
   from {
     transform: scaleX(0);
@@ -191,59 +160,21 @@
   }
 }
 
-@keyframes float-soft {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.animate-rise {
-  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.animate-fade {
-  animation: fade-in 1s ease both;
-}
-
 .animate-draw {
   transform-origin: left;
-  animation: draw-line 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.animate-float {
-  animation: float-soft 6s ease-in-out infinite;
-}
-
-.delay-1 {
-  animation-delay: 0.12s;
-}
-.delay-2 {
-  animation-delay: 0.24s;
-}
-.delay-3 {
-  animation-delay: 0.36s;
-}
-.delay-4 {
-  animation-delay: 0.48s;
-}
-
-.hero-panel {
-  background:
-    linear-gradient(145deg, #0b0d10 0%, #152038 48%, #1d4fff 140%);
-  box-shadow:
-    0 30px 60px -28px rgba(29, 79, 255, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  animation: draw-line 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .project-row {
-  transition: background-color 0.25s ease, padding-left 0.25s ease;
+  transition: background-color 0.2s ease;
 }
 
 .project-row:hover {
-  background-color: rgba(29, 79, 255, 0.04);
-  padding-left: 0.5rem;
+  background-color: rgba(11, 13, 16, 0.03);
+}
+
+.section-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--clay);
 }

@@ -25,13 +25,13 @@ export function SiteHeader({
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link
           href="/"
           className="flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight text-ink sm:text-xl"
         >
-          <BrandLogo size={32} title={name} />
+          <BrandLogo size={30} title={name} className="rounded-md shadow-none" />
           <span>
             {name}
             <span className="ml-0.5 text-clay">.</span>
@@ -43,7 +43,7 @@ export function SiteHeader({
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-full px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-mist hover:text-ink sm:px-3",
+                "rounded-md px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-mist hover:text-ink sm:px-3",
               )}
             >
               {link.label}
@@ -52,7 +52,7 @@ export function SiteHeader({
           {unreadCount > 0 ? (
             <Link
               href="/admin"
-              className="ml-1 rounded-full bg-clay px-2.5 py-1 text-xs font-medium text-white"
+              className="ml-1 rounded-md bg-clay px-2.5 py-1 text-xs font-medium text-white"
               title={dict.unreadMessages}
             >
               {unreadCount} {dict.newBadge}
@@ -62,7 +62,7 @@ export function SiteHeader({
             <input type="hidden" name="locale" value={locale === "tr" ? "en" : "tr"} />
             <button
               type="submit"
-              className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
+              className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
             >
               {locale === "tr" ? "EN" : "TR"}
             </button>
@@ -71,7 +71,7 @@ export function SiteHeader({
             <input type="hidden" name="theme" value={theme === "dark" ? "light" : "dark"} />
             <button
               type="submit"
-              className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
+              className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
             >
               {theme === "dark" ? dict.themeLight : dict.themeDark}
             </button>
@@ -90,7 +90,7 @@ export function SiteFooter({
   email: string;
 }) {
   return (
-    <footer className="mt-auto border-t border-border bg-background/60">
+    <footer className="mt-auto border-t border-border bg-background">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
           © {new Date().getFullYear()} {name}

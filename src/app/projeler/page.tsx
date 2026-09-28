@@ -18,7 +18,7 @@ export default async function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-24 pt-12 sm:px-6">
-      <p className="text-sm uppercase tracking-[0.18em] text-clay">{dict.portfolio}</p>
+      <p className="section-label">{dict.portfolio}</p>
       <h1 className="font-heading mt-2 text-4xl text-ink sm:text-5xl">{dict.projects}</h1>
       <p className="mt-4 max-w-2xl text-muted-foreground">{dict.projectsLead}</p>
       <div className="mt-12">

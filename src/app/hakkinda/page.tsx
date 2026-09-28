@@ -26,7 +26,7 @@ export default async function AboutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-24 pt-12 sm:px-6">
-      <p className="text-sm uppercase tracking-[0.18em] text-clay">{dict.about}</p>
+      <p className="section-label">{dict.about}</p>
       <h1 className="font-heading mt-2 text-4xl text-ink sm:text-5xl">{profile.name}</h1>
       <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{bio}</p>
 
@@ -38,7 +38,7 @@ export default async function AboutPage() {
             return (
               <li
                 key={exp.id}
-                className="grid gap-2 border-l-2 border-clay/50 pl-5 sm:grid-cols-[7rem_1fr]"
+                className="grid gap-2 border-l-2 border-border pl-5 sm:grid-cols-[7rem_1fr]"
               >
               <span className="text-sm text-muted-foreground">
                 {exp.startYear}

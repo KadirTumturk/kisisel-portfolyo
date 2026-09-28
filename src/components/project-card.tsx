@@ -55,7 +55,7 @@ export function ProjectCard({
           href={`/projeler/${slug}`}
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "shrink-0 rounded-full border-ink/15 group-hover:border-clay group-hover:text-clay",
+            "shrink-0 rounded-md border-ink/15 group-hover:border-clay group-hover:text-clay",
           )}
         >
           {viewLabel}

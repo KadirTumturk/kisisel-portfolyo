@@ -31,38 +31,42 @@ export default async function HomePage() {
   return (
     <div>
       <section className="relative overflow-hidden border-b border-border">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-20">
           <div className="relative z-10">
-            <p className="animate-fade text-xs font-medium uppercase tracking-[0.28em] text-clay sm:text-sm">
+            <p className="section-label">
               {location} · {dict.heroBadge}
             </p>
-            <h1 className="animate-rise font-heading mt-4 text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.92] tracking-tight text-ink">
+            <h1 className="font-heading mt-3 text-[clamp(2.75rem,7.5vw,5rem)] leading-[0.94] tracking-tight text-ink">
               {profile.name}
             </h1>
-            <div className="animate-draw mt-6 h-[3px] w-16 bg-clay delay-1" />
-            <p className="animate-rise delay-1 mt-5 text-xl font-medium text-ink/80 sm:text-2xl">
-              {title}
-            </p>
-            <p className="animate-rise delay-2 mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <div className="animate-draw mt-5 h-[2px] w-14 bg-clay" />
+            <p className="mt-5 text-xl font-medium text-ink/85 sm:text-2xl">{title}</p>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               {bio}
             </p>
-            <div className="animate-rise delay-3 mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-2.5">
               <Link
                 href="/iletisim"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-clay px-5 text-primary-foreground hover:bg-clay/90",
+                  "rounded-md bg-clay px-5 text-primary-foreground hover:bg-clay/90",
                 )}
               >
                 {dict.reachOut}
               </Link>
               <Link
                 href="/projeler"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "px-5")}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "rounded-md px-5",
+                )}
               >
                 {dict.seeProjects}
               </Link>
-              <Link href="/cv" className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}>
+              <Link
+                href="/cv"
+                className={cn(buttonVariants({ variant: "ghost", size: "lg" }), "rounded-md")}
+              >
                 {dict.downloadCv}
               </Link>
               {profile.githubUrl ? (
@@ -70,7 +74,7 @@ export default async function HomePage() {
                   href={profile.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
+                  className={cn(buttonVariants({ variant: "ghost", size: "lg" }), "rounded-md")}
                 >
                   GitHub
                 </a>
@@ -78,32 +82,28 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="animate-rise delay-2 relative mx-auto w-full max-w-md lg:max-w-none">
-            <div className="animate-float mx-auto w-full max-w-[22rem] lg:max-w-none">
-              <Image
-                src="/brand/logo.png"
-                alt="KT"
-                width={512}
-                height={512}
-                className="aspect-square w-full rounded-[1.75rem] object-cover shadow-[0_30px_80px_-28px_rgba(29,79,255,0.55)]"
-                priority
-              />
-              <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-                {dict.heroPanelText}
-              </p>
-            </div>
+          <div className="relative mx-auto w-full max-w-[16rem] lg:mx-0 lg:max-w-none lg:pt-8">
+            <Image
+              src="/brand/logo.png"
+              alt="KT"
+              width={512}
+              height={512}
+              className="aspect-square w-full rounded-xl border border-border object-cover shadow-sm"
+              priority
+            />
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {dict.heroPanelText}
+            </p>
           </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-6xl px-4 pb-24 pt-16 sm:px-6 sm:pt-20">
         <section>
-          <div className="mb-10 flex items-end justify-between gap-4">
+          <div className="mb-8 flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">
-                {dict.selectedWork}
-              </p>
-              <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink sm:text-4xl">
+              <p className="section-label">{dict.selectedWork}</p>
+              <h2 className="font-heading mt-1.5 text-3xl tracking-tight text-ink sm:text-4xl">
                 {dict.projects}
               </h2>
             </div>
@@ -134,19 +134,19 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="mt-20 grid gap-12 sm:mt-28 lg:grid-cols-2 lg:gap-16">
+        <section className="mt-20 grid gap-12 sm:mt-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.skills}</p>
-            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">
+            <p className="section-label">{dict.skills}</p>
+            <h2 className="font-heading mt-1.5 text-3xl tracking-tight text-ink">
               {dict.skillsTitle}
             </h2>
-            <ul className="mt-7 flex flex-wrap gap-2.5">
+            <ul className="mt-7 grid gap-2 sm:grid-cols-2">
               {profile.skills.map((skill) => (
                 <li
                   key={skill.id}
-                  className="rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-sm text-ink shadow-[0_1px_0_rgba(11,13,16,0.04)]"
+                  className="border border-border bg-card px-3.5 py-2.5 text-sm text-ink"
                 >
-                  {localizeSkillName(locale, skill.name)}
+                  <span className="font-medium">{localizeSkillName(locale, skill.name)}</span>
                   {skill.level ? (
                     <span className="ml-2 text-muted-foreground">
                       {localizeLevel(locale, skill.level)}
@@ -157,23 +157,20 @@ export default async function HomePage() {
             </ul>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">
-              {dict.education}
-            </p>
-            <h2 className="font-heading mt-2 text-3xl tracking-tight text-ink">{dict.journey}</h2>
-            <ul className="mt-7 space-y-6">
+            <p className="section-label">{dict.education}</p>
+            <h2 className="font-heading mt-1.5 text-3xl tracking-tight text-ink">{dict.journey}</h2>
+            <ul className="mt-7 space-y-5">
               {profile.experiences.map((exp) => {
                 const localized = localizeExperience(locale, exp);
                 return (
-                  <li key={exp.id} className="relative border-l-2 border-clay/30 pl-5">
-                  <span className="absolute -left-[5px] top-1.5 size-2 rounded-full bg-clay" />
-                  <p className="text-sm text-muted-foreground">
-                    {exp.startYear}
-                    {exp.endYear ? `–${exp.endYear}` : "–"}
-                  </p>
-                  <p className="mt-1 font-medium text-ink">{localized.organization}</p>
-                  <p className="text-muted-foreground">{localized.role}</p>
-                </li>
+                  <li key={exp.id} className="border-l-2 border-border pl-4">
+                    <p className="text-sm text-muted-foreground">
+                      {exp.startYear}
+                      {exp.endYear ? `–${exp.endYear}` : "–"}
+                    </p>
+                    <p className="mt-1 font-medium text-ink">{localized.organization}</p>
+                    <p className="text-muted-foreground">{localized.role}</p>
+                  </li>
                 );
               })}
             </ul>

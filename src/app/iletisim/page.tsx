@@ -29,7 +29,7 @@ export default async function ContactPage({
   return (
     <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.24em] text-clay">{dict.contact}</p>
+        <p className="section-label">{dict.contact}</p>
         <h1 className="font-heading mt-2 text-4xl tracking-tight text-ink sm:text-5xl">
           {dict.contactTitle}
         </h1>
@@ -57,12 +57,12 @@ export default async function ContactPage({
       </div>
 
       {ok ? (
-        <div className="space-y-4 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(29,79,255,0.35)] sm:p-8">
+        <div className="space-y-4 border border-border bg-card p-6 sm:p-8">
           <h2 className="font-heading text-2xl text-ink">{dict.thanks}</h2>
           <p className="text-muted-foreground">{dict.thanksBody}</p>
           <a
             href="/iletisim"
-            className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm hover:bg-mist"
+            className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm hover:bg-mist"
           >
             {dict.newMessage}
           </a>
@@ -71,7 +71,7 @@ export default async function ContactPage({
         <form
           action="/api/messages/form"
           method="post"
-          className="space-y-5 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(11,13,16,0.25)] sm:p-8"
+          className="space-y-5 border border-border bg-card p-6 sm:p-8"
         >
           <div className="hidden" aria-hidden>
             <label htmlFor="company">Company</label>
@@ -168,7 +168,7 @@ export default async function ContactPage({
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
           <button
             type="submit"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-clay px-4 text-sm font-medium text-white hover:bg-clay/90"
           >
             {dict.send}
           </button>

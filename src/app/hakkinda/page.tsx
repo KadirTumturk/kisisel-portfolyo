@@ -66,7 +66,7 @@ export default async function AboutPage() {
             const level = localizeLevel(locale, skill.level);
             const category = localizeCategory(locale, skill.category);
             return (
-              <li key={skill.id} className="border border-border bg-card/40 px-4 py-3">
+              <li key={skill.id} className="border border-border px-4 py-3">
                 <p className="font-medium text-ink">
                   {localizeSkillName(locale, skill.name)}
                 </p>

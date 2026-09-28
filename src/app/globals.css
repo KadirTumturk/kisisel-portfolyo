@@ -124,17 +124,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     background-color: var(--background);
-    background-image:
-      linear-gradient(180deg, #f7f8fb 0%, #ffffff 42%),
-      linear-gradient(rgba(11, 13, 16, 0.045) 1px, transparent 1px);
-    background-size: auto, 100% 28px;
-    background-attachment: scroll;
   }
 
   .dark body {
-    background-image:
-      linear-gradient(180deg, #10151e 0%, #0d1117 42%),
-      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-color: var(--background);
   }
 
   @media print {
@@ -166,11 +159,7 @@
 }
 
 .project-row {
-  transition: background-color 0.2s ease;
-}
-
-.project-row:hover {
-  background-color: rgba(11, 13, 16, 0.03);
+  transition: color 0.15s ease;
 }
 
 .section-label {

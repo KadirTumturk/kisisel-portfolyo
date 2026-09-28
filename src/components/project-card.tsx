@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +30,7 @@ export function ProjectCard({
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span className="tabular-nums">{year}</span>
             {featured ? (
-              <span className="border border-clay/25 bg-clay/10 px-2 py-0.5 text-xs font-medium text-clay">
+              <span className="border border-clay/30 px-2 py-0.5 text-xs font-medium text-clay">
                 {featuredLabel}
               </span>
             ) : null}
@@ -44,7 +43,7 @@ export function ProjectCard({
             {technologies.map((t) => (
               <span
                 key={t.technology.name}
-                className="rounded-md bg-mist px-2 py-0.5 text-xs text-muted-foreground"
+                className="border border-border px-2 py-0.5 text-xs text-muted-foreground"
               >
                 {t.technology.name}
               </span>

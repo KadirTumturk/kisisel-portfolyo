@@ -144,7 +144,7 @@ export default async function HomePage() {
               {profile.skills.map((skill) => (
                 <li
                   key={skill.id}
-                  className="border border-border bg-card px-3.5 py-2.5 text-sm text-ink"
+                  className="border border-border px-3.5 py-2.5 text-sm text-ink"
                 >
                   <span className="font-medium">{localizeSkillName(locale, skill.name)}</span>
                   {skill.level ? (

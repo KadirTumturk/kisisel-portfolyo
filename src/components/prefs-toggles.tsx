@@ -23,9 +23,16 @@ export function ThemeToggle({
 
   function toggle() {
     const next = theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
+    const root = document.documentElement;
+    root.classList.add("theme-instant");
+    root.classList.toggle("dark", next === "dark");
     setPrefCookie("theme", next);
     setTheme(next);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        root.classList.remove("theme-instant");
+      });
+    });
   }
 
   return (

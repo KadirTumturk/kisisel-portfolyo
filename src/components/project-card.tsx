@@ -35,7 +35,7 @@ export function ProjectCard({
               </span>
             ) : null}
           </div>
-          <h3 className="font-heading text-2xl tracking-tight text-ink transition-colors group-hover:text-clay sm:text-3xl">
+          <h3 className="font-heading text-2xl tracking-tight text-ink group-hover:text-clay sm:text-3xl">
             <Link href={`/projeler/${slug}`}>{title}</Link>
           </h3>
           <p className="text-base leading-relaxed text-muted-foreground">{summary}</p>

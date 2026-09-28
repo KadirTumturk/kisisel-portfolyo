@@ -125,6 +125,10 @@
   html.dark {
     color-scheme: dark;
   }
+  html.theme-instant,
+  html.theme-instant * {
+    transition: none !important;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     background-color: var(--background);
@@ -163,7 +167,8 @@
 }
 
 .project-row {
-  transition: color 0.15s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 11rem;
 }
 
 .section-label {

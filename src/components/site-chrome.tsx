@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
+import { LocaleToggle, ThemeToggle } from "@/components/prefs-toggles";
 import { cn } from "@/lib/utils";
 import type { Dictionary, Locale } from "@/lib/i18n";
 
@@ -58,24 +59,14 @@ export function SiteHeader({
               {unreadCount} {dict.newBadge}
             </Link>
           ) : null}
-          <form action="/api/prefs" method="post" className="ml-1">
-            <input type="hidden" name="locale" value={locale === "tr" ? "en" : "tr"} />
-            <button
-              type="submit"
-              className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
-            >
-              {locale === "tr" ? "EN" : "TR"}
-            </button>
-          </form>
-          <form action="/api/prefs" method="post">
-            <input type="hidden" name="theme" value={theme === "dark" ? "light" : "dark"} />
-            <button
-              type="submit"
-              className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-ink"
-            >
-              {theme === "dark" ? dict.themeLight : dict.themeDark}
-            </button>
-          </form>
+          <div className="ml-1 flex items-center gap-1">
+            <LocaleToggle locale={locale} />
+            <ThemeToggle
+              initialTheme={theme}
+              lightLabel={dict.themeLight}
+              darkLabel={dict.themeDark}
+            />
+          </div>
         </nav>
       </div>
     </header>

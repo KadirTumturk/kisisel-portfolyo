@@ -31,9 +31,9 @@ export function ProjectCard({
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span className="tabular-nums">{year}</span>
             {featured ? (
-              <Badge variant="secondary" className="bg-clay/10 text-clay hover:bg-clay/10">
+              <span className="border border-clay/25 bg-clay/10 px-2 py-0.5 text-xs font-medium text-clay">
                 {featuredLabel}
-              </Badge>
+              </span>
             ) : null}
           </div>
           <h3 className="font-heading text-2xl tracking-tight text-ink transition-colors group-hover:text-clay sm:text-3xl">
